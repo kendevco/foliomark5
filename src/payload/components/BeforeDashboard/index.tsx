@@ -23,14 +23,9 @@ const BeforeDashboard: React.FC = () => {
           {' to see the results.'}
         </li>
         <li>
-          If you created this repo using Payload Cloud, head over to GitHub and clone it to your
-          local machine. It will be under the <i>GitHub Scope</i> that you selected when creating
-          this project.
-        </li>
-        <li>
           {'Modify your '}
           <a
-            href="https://payloadcms.com/docs/configuration/collections"
+            href="https://payloadcms.com/docs/beta/configuration/collections"
             rel="noopener noreferrer"
             target="_blank"
           >
@@ -38,7 +33,7 @@ const BeforeDashboard: React.FC = () => {
           </a>
           {' and add more '}
           <a
-            href="https://payloadcms.com/docs/fields/overview"
+            href="https://payloadcms.com/beta/docs/fields/overview"
             rel="noopener noreferrer"
             target="_blank"
           >
@@ -46,7 +41,7 @@ const BeforeDashboard: React.FC = () => {
           </a>
           {' as needed. If you are new to Payload, we also recommend you check out the '}
           <a
-            href="https://payloadcms.com/docs/getting-started/what-is-payload"
+            href="https://payloadcms.com/beta/docs/getting-started/what-is-payload"
             rel="noopener noreferrer"
             target="_blank"
           >
@@ -60,7 +55,7 @@ const BeforeDashboard: React.FC = () => {
       </ul>
       {'Pro Tip: This block is a '}
       <a
-        href="https://payloadcms.com/docs/admin/components#base-component-overrides"
+        href="https://payloadcms.com/docs/beta/admin/components#base-component-overrides"
         rel="noopener noreferrer"
         target="_blank"
       >

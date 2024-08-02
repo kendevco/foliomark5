@@ -37,7 +37,7 @@ export const MediaBlock: React.FC<Props> = (props) => {
       className={cn(
         '',
         {
-          container: position === 'default' && enableGutter,
+          'container mx-auto': position === 'default' && enableGutter,
         },
         className,
       )}
@@ -48,14 +48,20 @@ export const MediaBlock: React.FC<Props> = (props) => {
         </div>
       )}
       {position === 'default' && (
-        <Media imgClassName={cn('rounded', imgClassName)} resource={media} src={staticImage} />
+        <div className="flex justify-center"> {/* Add this wrapper div */}
+          <Media
+            imgClassName={cn('rounded', imgClassName)}
+            resource={media}
+            src={staticImage}
+          />
+        </div>
       )}
       {caption && (
         <div
           className={cn(
             'mt-6',
             {
-              container: position === 'fullscreen',
+              'container mx-auto': position === 'fullscreen',
             },
             captionClassName,
           )}
