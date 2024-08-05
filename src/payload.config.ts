@@ -29,6 +29,7 @@ import BookComments from './payload/collections/BookComments'
 import BookJournalEntries from './payload/collections/BookJournalEntries'
 import Books from './payload/collections/Books'
 import Users from './payload/collections/Users'
+import Authors from './payload/collections/Authors'
 import BeforeDashboard from './payload/components/BeforeDashboard'
 import BeforeLogin from './payload/components/BeforeLogin'
 import { seed } from './payload/endpoints/seed'
@@ -118,6 +119,7 @@ export default buildConfig({
   }),
   // database-adapter-config-end
   collections: [Pages, Posts, Media, Categories, Users, BookComments, BookJournalEntries, Books],
+  collections: [Pages, Posts, Media, Categories, Users, BookComments, BookJournalEntries, Books, Authors],
   cors: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(Boolean),
   csrf: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(Boolean),
   endpoints: [
