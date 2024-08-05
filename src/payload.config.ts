@@ -1,6 +1,6 @@
 // This is a modification of the file so I can check it back in to make a new push.
 // storage-adapter-import-placeholder
-import { mongooseAdapter } from '@payloadcms/db-mongodb' // database-adapter-import\
+import { mongooseAdapter } from '@payloadcms/db-mongodb' // database-adapter-import
 import { payloadCloudPlugin } from '@payloadcms/plugin-cloud'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
@@ -25,6 +25,9 @@ import Categories from './payload/collections/Categories'
 import { Media } from './payload/collections/Media'
 import { Pages } from './payload/collections/Pages'
 import { Posts } from './payload/collections/Posts'
+import BookComments from './payload/collections/BookComments'
+import BookJournalEntries from './payload/collections/BookJournalEntries'
+import Books from './payload/collections/Books'
 import Users from './payload/collections/Users'
 import BeforeDashboard from './payload/components/BeforeDashboard'
 import BeforeLogin from './payload/components/BeforeLogin'
@@ -39,7 +42,7 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
-  return doc?.title ? `${doc.title} | Payload Website Template` : 'Payload Website Template'
+  return doc?.title ? `${doc.title} | KenDev.Co Payload Website` : 'KenDev.Co Payload Website'
 }
 
 const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
@@ -48,27 +51,10 @@ const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
     : process.env.NEXT_PUBLIC_SERVER_URL
 }
 
-console.log('Environment Variables:')
-console.log('PORT:', process.env.PORT)
-console.log('DATABASE_URI:', process.env.DATABASE_URI)
-console.log('PAYLOAD_SECRET:', process.env.PAYLOAD_SECRET)
-console.log('PAYLOAD_PUBLIC_SERVER_URL:', process.env.PAYLOAD_PUBLIC_SERVER_URL)
-console.log('NEXT_PUBLIC_SERVER_URL:', process.env.NEXT_PUBLIC_SERVER_URL)
-console.log('NEXT_PUBLIC_IS_LIVE:', process.env.NEXT_PUBLIC_IS_LIVE)
-console.log('PAYLOAD_PUBLIC_DRAFT_SECRET:', process.env.PAYLOAD_PUBLIC_DRAFT_SECRET)
-console.log('NEXT_PRIVATE_DRAFT_SECRET:', process.env.NEXT_PRIVATE_DRAFT_SECRET)
-console.log('REVALIDATION_KEY:', process.env.REVALIDATION_KEY)
-console.log('NEXT_PRIVATE_REVALIDATION_KEY:', process.env.NEXT_PRIVATE_REVALIDATION_KEY)
-console.log('BLOB_READ_WRITE_TOKEN:', process.env.BLOB_READ_WRITE_TOKEN)
-
 export default buildConfig({
   admin: {
     components: {
-      // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
-      // Feel free to delete this at any time. Simply remove the line below and the import `BeforeLogin` statement on line 15.
       beforeLogin: [BeforeLogin],
-      // The `BeforeDashboard` component renders the 'welcome' block that you see after logging into your admin panel.
-      // Feel free to delete this at any time. Simply remove the line below and the import `BeforeDashboard` statement on line 15.
       beforeDashboard: [BeforeDashboard],
     },
     user: Users.slug,
@@ -95,7 +81,6 @@ export default buildConfig({
       ],
     },
   },
-  // This config helps us configure global or default features that the other editors can inherit
   editor: lexicalEditor({
     features: () => {
       return [
@@ -132,12 +117,10 @@ export default buildConfig({
     url: process.env.DATABASE_URI,
   }),
   // database-adapter-config-end
-  collections: [Pages, Posts, Media, Categories, Users],
+  collections: [Pages, Posts, Media, Categories, Users, BookComments, BookJournalEntries, Books],
   cors: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(Boolean),
   csrf: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(Boolean),
   endpoints: [
-    // The seed endpoint is used to populate the database with some example data
-    // You should delete this endpoint before deploying your site to production
     {
       handler: seed,
       method: 'get',
