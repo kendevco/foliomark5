@@ -1,6 +1,6 @@
-# FolioMark5: Ken Courtney's Portfolio and Project Showcase
+# FolioMark5: Ken's Portfolio v5 and Project Showcase
 
-Welcome to the repository for [folio.kendev.co](https://folio.kendev.co), my personal portfolio and project showcase built with Payload CMS.
+Welcome to the repository for [foliomark5.kendev.co](https://foliomark5.kendev.co), my personal portfolio and project showcase built with Payload CMS v5.
 
 ## About This Project
 
@@ -9,7 +9,7 @@ FolioMark5 is a multifaceted platform that serves as my hobby site, portfolio, a
 ### Key Features
 
 - **Portfolio Showcase**: Highlighting my development projects and skills.
-- **Prison Book Log**: A migrated application listing books I've read, including dates and personal notes.
+- **Book Log**: A migrated application listing books I've read, including dates and personal notes.
 - **Blog**: A space for sharing thoughts, experiences, and technical insights.
 - **Affiliate Links**: Curated links to products and services I recommend.
 - **Custom Payload CMS Blocks**: Utilizing both default and custom-built content blocks.
@@ -25,9 +25,9 @@ FolioMark5 is a multifaceted platform that serves as my hobby site, portfolio, a
 
 This repository is public as a way to give back to the Payload CMS community. Feel free to explore, fork, or submit pull requests if you find ways to improve the project or have suggestions.
 
-## Prison Book Log
+## Book Log
 
-One of the unique features of this site is the Prison Book Log, a personal project documenting my reading journey. This feature showcases:
+One of the unique features of this site is the Book Log, a personal project documenting my reading journey. This feature showcases:
 
 - Custom Payload collection for book entries
 - Detailed logging including read dates and personal reflections
