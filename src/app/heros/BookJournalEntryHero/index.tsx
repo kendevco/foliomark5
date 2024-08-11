@@ -2,14 +2,16 @@
 import { formatDateTime } from '@/utilities/formatDateTime'
 import React from 'react'
 
-import type { BookJournalEntry } from '../../../payload-types'
+import type { BookJournalEntry, BookComment } from '../../../payload-types'
 
 import { Media } from '../../components/Media'
 
 export const BookJournalEntryHero: React.FC<{
   bookJournalEntry: BookJournalEntry
 }> = ({ bookJournalEntry }) => {
-  const { genres, meta: { image: metaImage } = {}, populatedAuthors, publishedAt, title } = bookJournalEntry
+  comments: BookComment[]
+  const { book, user, lastReadDate, startDate, endDate, rating, review } = bookJournalEntry
+  const { title, authors, coverImage } = book
 
   return (
     <div className="relative -mt-[10.4rem] flex items-end">
@@ -17,8 +19,8 @@ export const BookJournalEntryHero: React.FC<{
         <div className="col-start-1 col-span-1 md:col-start-2 md:col-span-2">
           <div className="uppercase text-sm mb-6">
             {genres?.map((genre, index) => {
-              if (typeof genre === 'object' && genre !== null) {
-                const { title: genreTitle } = genre
+              if (typeof book.genres === 'object' && book.genres !== null) {
+                const { title: genreTitle } = book.genres
 
                 const titleToUse = genreTitle || 'Untitled genre'
 
@@ -41,10 +43,10 @@ export const BookJournalEntryHero: React.FC<{
 
           <div className="flex flex-col md:flex-row gap-4 md:gap-16">
             <div className="flex flex-col gap-4">
-              {populatedAuthors && (
+              {authors && (
                 <div className="flex flex-col gap-1">
                   <p className="text-sm">Author</p>
-                  {populatedAuthors.map((author, index) => {
+                  {authors.map((author, index) => {
                     const { name } = author
 
                     const isLast = index === populatedAuthors.length - 1
