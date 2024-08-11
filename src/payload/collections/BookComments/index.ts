@@ -1,4 +1,6 @@
-import { CollectionConfig } from 'payload/types';
+// src\payload\collections\BookComments\index.ts
+
+import { CollectionConfig } from 'payload'
 
 const BookComments: CollectionConfig = {
   slug: 'book-comments',
@@ -6,7 +8,7 @@ const BookComments: CollectionConfig = {
     {
       name: 'book',
       type: 'relationship',
-      relationTo: 'books',
+      relationTo: 'books', // Change this line
       required: true,
     },
     {
@@ -26,6 +28,5 @@ const BookComments: CollectionConfig = {
       required: true,
     },
   ],
-};
-
-export default BookComments;
+} as const
+export default BookComments

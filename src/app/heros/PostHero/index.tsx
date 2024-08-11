@@ -1,3 +1,4 @@
+// src\app\heros\PostHero\index.tsx
 import { formatDateTime } from '@/utilities/formatDateTime'
 import React from 'react'
 

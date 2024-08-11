@@ -1,3 +1,5 @@
+// src\app\posts\[slug]\page.tsx
+
 import type { Metadata } from 'next'
 
 import { RelatedPosts } from '@/blocks/RelatedPosts'

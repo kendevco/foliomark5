@@ -4,7 +4,7 @@ import RichText from 'src/app/components/RichText'
 
 import type { Post } from '../../../payload-types'
 
-import { Card } from '../../components/Card'
+import { Card } from '../../components/Posts/Card'
 
 export type RelatedPostsProps = {
   className?: string

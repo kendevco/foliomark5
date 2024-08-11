@@ -1,3 +1,5 @@
+// src\app\providers\index.tsx
+
 import React from 'react'
 
 import { HeaderThemeProvider } from './HeaderTheme'

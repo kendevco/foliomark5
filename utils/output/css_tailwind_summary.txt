@@ -1,0 +1,13 @@
+CSS and Tailwind Configuration Summary:
+
+src:
+  Total files analyzed: 169
+  CSS and Tailwind related files: 1
+  Other files: 168
+
+  CSS files found: 1
+  Tailwind config found: No
+  PostCSS config found: No
+
+  WARNING: Tailwind config not found. This may cause issues with Tailwind CSS.
+  WARNING: PostCSS config not found. This may cause issues with CSS processing.

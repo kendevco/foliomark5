@@ -38,6 +38,7 @@ import { Header } from './payload/globals/Header/Header'
 import { revalidateRedirects } from './payload/hooks/revalidateRedirects'
 import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import { Page, Post } from 'src/payload-types'
+import Genre from './payload/collections/Genres'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -118,8 +119,18 @@ export default buildConfig({
     url: process.env.DATABASE_URI,
   }),
   // database-adapter-config-end
-  collections: [Pages, Posts, Media, Categories, Users, BookComments, BookJournalEntries, Books],
-  collections: [Pages, Posts, Media, Categories, Users, BookComments, BookJournalEntries, Books, Authors],
+  collections: [
+    Pages,
+    Posts,
+    Media,
+    Categories,
+    Genre,
+    Users,
+    BookComments,
+    BookJournalEntries,
+    Books,
+    Authors,
+  ],
   cors: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(Boolean),
   csrf: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(Boolean),
   endpoints: [

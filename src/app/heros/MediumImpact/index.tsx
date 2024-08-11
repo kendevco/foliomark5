@@ -1,3 +1,4 @@
+// src\app\heros\LowImpact\index.tsx
 import React from 'react'
 
 import type { Page } from '../../../payload-types'

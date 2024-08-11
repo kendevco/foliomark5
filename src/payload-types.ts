@@ -15,7 +15,12 @@ export interface Config {
     posts: Post;
     media: Media;
     categories: Category;
+    genres: Genre;
     users: User;
+    'book-comments': BookComment;
+    'book-journal-entries': BookJournalEntry;
+    books: Book;
+    authors: Author;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -512,6 +517,132 @@ export interface Form {
         id?: string | null;
       }[]
     | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "genres".
+ */
+export interface Genre {
+  id: string;
+  title: string;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "book-comments".
+ */
+export interface BookComment {
+  id: string;
+  book: string | Book;
+  user: string | User;
+  comment: string;
+  date: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "books".
+ */
+export interface Book {
+  id: string;
+  title: string;
+  authors: (string | Author)[];
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  publishedDate?: string | null;
+  isbn?: string | null;
+  genres?: (string | Genre)[] | null;
+  pageCount?: number | null;
+  language?: ('English' | 'Spanish' | 'French' | 'German' | 'Other') | null;
+  averageRating?: number | null;
+  ratingsCount?: number | null;
+  coverImage?: string | Media | null;
+  content?:
+    | {
+        position?: ('default' | 'fullscreen') | null;
+        media: string | Media;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'mediaBlock';
+      }[]
+    | null;
+  journalEntries?: (string | BookJournalEntry)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "authors".
+ */
+export interface Author {
+  id: string;
+  name: string;
+  slug: string;
+  bio?: string | null;
+  books?: (string | Book)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "book-journal-entries".
+ */
+export interface BookJournalEntry {
+  id: string;
+  book: string | Book;
+  user: string | User;
+  review: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  notes?: string | null;
+  lastReadDate: string;
+  startDate?: string | null;
+  endDate?: string | null;
+  rating?: number | null;
+  pagesRead?: number | null;
+  readingStatus?: ('to-read' | 'reading' | 'read' | 'abandoned') | null;
+  usersWithEntries?:
+    | {
+        user?: (string | null) | User;
+        id?: string | null;
+      }[]
+    | null;
+  meta?: {
+    title?: string | null;
+    image?: string | Media | null;
+    description?: string | null;
+  };
+  slug: string;
   updatedAt: string;
   createdAt: string;
 }

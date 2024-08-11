@@ -1,3 +1,4 @@
+// src\app\components\Hero\index.tsx
 import React from 'react'
 
 import type { Page } from '../../../payload-types'

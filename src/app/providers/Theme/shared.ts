@@ -1,3 +1,5 @@
+// src\app\providers\Theme\shared.ts
+
 import type { Theme } from './types'
 
 export const themeLocalStorageKey = 'payload-theme'

@@ -1,3 +1,4 @@
+// src\app\cssVariables.js
 // Keep these in sync with the CSS variables in the `_css` directory
 
 const cssVariables = {

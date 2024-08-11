@@ -1,3 +1,4 @@
+// src\app\(frontend)\posts\[slug]\page.client.tsx
 'use client'
 import { useHeaderTheme } from '@/providers/HeaderTheme'
 import React, { useEffect } from 'react'

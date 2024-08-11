@@ -1,3 +1,4 @@
+// src\app\heros\HighImpact\index.tsx
 'use client'
 import { useHeaderTheme } from '@/providers/HeaderTheme'
 import React, { useEffect } from 'react'

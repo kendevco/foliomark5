@@ -1,3 +1,5 @@
+// src\app\providers\Theme\types.ts
+
 export type Theme = 'dark' | 'light'
 
 export interface ThemeContextType {

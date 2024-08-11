@@ -7,7 +7,7 @@ import RichText from 'src/app/components/RichText'
 
 import type { ArchiveBlockProps } from './types'
 
-import { CollectionArchive } from '../../components/CollectionArchive'
+import { CollectionArchive } from '../../components/Posts/CollectionArchive'
 
 export const ArchiveBlock: React.FC<
   ArchiveBlockProps & {
@@ -32,12 +32,12 @@ export const ArchiveBlock: React.FC<
       limit,
       ...(flattenedCategories && flattenedCategories.length > 0
         ? {
-            where: {
-              categories: {
-                in: flattenedCategories,
-              },
+          where: {
+            categories: {
+              in: flattenedCategories,
             },
-          }
+          },
+        }
         : {}),
     })
 

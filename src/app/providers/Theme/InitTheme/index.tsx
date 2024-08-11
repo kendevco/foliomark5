@@ -1,3 +1,5 @@
+// src\app\providers\Theme\InitTheme\index.tsx
+
 import Script from 'next/script'
 import React from 'react'
 

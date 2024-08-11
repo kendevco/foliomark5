@@ -1,3 +1,5 @@
+// src\payload\endpoints\seed.ts
+
 import { type PayloadHandler, commitTransaction, initTransaction } from 'payload'
 
 import { seed as seedScript } from '../seed'
