@@ -9,6 +9,8 @@ import { Media } from '../../components/Media'
 export const BookJournalEntryHero: React.FC<{
   bookJournalEntry: BookJournalEntry
 }> = ({ bookJournalEntry }) => {
+  bookJournalEntry: BookJournalEntry
+  comments: BookComment[]
 }> = ({ bookJournalEntry, comments }) => {
   const { book, user, lastReadDate, startDate, endDate, rating, review } = bookJournalEntry
   const { title, authors, coverImage } = book
@@ -22,6 +24,7 @@ export const BookJournalEntryHero: React.FC<{
             {genres?.map((genre, index) => {
               if (typeof book.genres === 'object' && book.genres !== null) {
                 const { title: genreTitle } = book.genres
+                const { title: genreTitle } = genre
 
                 const titleToUse = genreTitle || 'Untitled genre'
 
@@ -31,6 +34,7 @@ export const BookJournalEntryHero: React.FC<{
                   <React.Fragment key={index}>
                     {titleToUse}
                     {!isLast && <React.Fragment>,  </React.Fragment>}
+                    {!isLast && <React.Fragment>, &nbsp;</React.Fragment>}
                   </React.Fragment>
                 )
               }
@@ -52,42 +56,59 @@ export const BookJournalEntryHero: React.FC<{
 
                     const isLast = index === populatedAuthors.length - 1
                     const secondToLast = index === populatedAuthors.length - 2
+                     const isLast = index === authors.length - 1
+                     const secondToLast = index === authors.length - 2
 
-                    return (
-                      <React.Fragment key={index}>
-                        {name}
-                        {secondToLast && populatedAuthors.length > 2 && (
-                          <React.Fragment>, </React.Fragment>
-                        )}
-                        {secondToLast && populatedAuthors.length === 2 && (
-                          <React.Fragment> </React.Fragment>
-                        )}
-                        {!isLast && populatedAuthors.length > 1 && (
-                          <React.Fragment>and </React.Fragment>
-                        )}
-                      </React.Fragment>
-                    )
-                  })}
+                     return (
+                       <React.Fragment key={index}>
+                         {name}
+                         {secondToLast && populatedAuthors.length > 2 && (
+                           <React.Fragment>, </React.Fragment>
+                         )}
+                         {secondToLast && populatedAuthors.length === 2 && (
+                           <React.Fragment> </React.Fragment>
+                         )}
+                         {!isLast && populatedAuthors.length > 1 && (
+                        {secondToLast && authors.length > 2 && (
+                        {secondToLast && authors.length === 2 && (
+                        {!isLast && authors.length > 1 && (
+                           <React.Fragment>and </React.Fragment>
+                         )}
+                       </React.Fragment>
+                     )
+                   })}
+                 </div>
+               )}
+             </div>
+             {publishedAt && (
+               <div className="flex flex-col gap-1">
+                 <p className="text-sm">Date Published</p>
+
+                 <time dateTime={publishedAt}>{formatDateTime(publishedAt)}</time>
+               </div>
+             )}
+              {lastReadDate && (
+                <div className="flex flex-col gap-1">
+                  <p className="text-sm">Date Last Read</p>
+                  <time dateTime={lastReadDate}>{formatDateTime(lastReadDate)}</time>
+                </div>
+              )}
+              {rating && (
+                <div className="flex flex-col gap-1">
+                  <p className="text-sm">Rating</p>
+                  <span>{rating} / 5</span>
                 </div>
               )}
             </div>
-            {publishedAt && (
-              <div className="flex flex-col gap-1">
-                <p className="text-sm">Date Published</p>
-
-                <time dateTime={publishedAt}>{formatDateTime(publishedAt)}</time>
-              </div>
-            )}
           </div>
         </div>
+        <div className="min-h-[80vh] select-none">
+          {metaImage && typeof metaImage !== 'string' && (
+            <Media fill imgClassName="-z-10 object-cover" resource={metaImage} />
+          )}
+          <div className="absolute pointer-events-none left-0 bottom-0 w-full h-1/2 bg-gradient-to-t from-black to-transparent" />
+        </div>
       </div>
-      <div className="min-h-[80vh] select-none">
-        {metaImage && typeof metaImage !== 'string' && (
-          <Media fill imgClassName="-z-10 object-cover" resource={metaImage} />
-        )}
-        <div className="absolute pointer-events-none left-0 bottom-0 w-full h-1/2 bg-gradient-to-t from-black to-transparent" />
-      </div>
-    </div>
-  )
-}
-*w
+    )
+  }
+  *w
