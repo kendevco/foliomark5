@@ -14,7 +14,6 @@ export const BookJournalEntryHero: React.FC<{
 }> = ({ bookJournalEntry, comments }) => {
   const { book, user, lastReadDate, startDate, endDate, rating, review } = bookJournalEntry
   const { title, authors, coverImage } = book
-  const { genres } = book
 
   return (
     <div className="relative -mt-[10.4rem] flex items-end">
@@ -112,3 +111,4 @@ export const BookJournalEntryHero: React.FC<{
     )
   }
   *w
+import { Media } from '../../components/Media'
