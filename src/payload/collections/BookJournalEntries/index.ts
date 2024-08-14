@@ -162,10 +162,72 @@ const BookJournalEntries: CollectionConfig = {
   ],
   hooks: {
     beforeValidate: [
-      ({ data, originalDoc }) => {
-        if (data.book && (!originalDoc || data.book !== originalDoc.book)) {
-          data.slug = slugify(data.book.title, { lower: true, strict: true })
+      async ({ data, req }) => {
+        const { payload } = req
+
+        // Set user to logged in user
+        if (req.user) {
+          data.user = req.user.id
         }
+
+        // Find the most recently added entry
+        const latestEntry = await payload.find({
+          collection: 'book-journal-entries',
+          sort: '-createdAt',
+          limit: 1,
+        })
+
+        const today = new Date()
+        let lastReadDate = today
+
+        if (latestEntry.docs.length > 0) {
+          const latestEntryDate = new Date(latestEntry.docs[0].lastReadDate)
+          const sevenDaysLater = new Date(latestEntryDate)
+          sevenDaysLater.setDate(sevenDaysLater.getDate() + 7)
+
+          if (sevenDaysLater > today) {
+            lastReadDate = sevenDaysLater
+          }
+        }
+
+        // Set lastReadDate
+        data.lastReadDate = lastReadDate.toISOString()
+
+        // Set startDate to 7 days before lastReadDate
+        const startDate = new Date(lastReadDate)
+        startDate.setDate(startDate.getDate() - 7)
+        data.startDate = startDate.toISOString()
+
+        // Set endDate to lastReadDate
+        data.endDate = lastReadDate.toISOString()
+
+        // Generate slug
+        if (data.book) {
+          let bookTitle = 'untitled'
+          if (
+            typeof data.book === 'string' ||
+            (typeof data.book === 'object' && data.book.toString)
+          ) {
+            const bookId = typeof data.book === 'string' ? data.book : data.book.toString()
+            const bookDoc = await payload.findByID({
+              collection: 'books',
+              id: bookId,
+              depth: 1,
+            })
+            bookTitle = bookDoc?.title || 'untitled'
+          } else if (typeof data.book === 'object' && data.book.title) {
+            bookTitle = data.book.title
+          }
+
+          const userName = req.user ? req.user.name : 'unknown'
+          const slugBase = `${bookTitle}-${userName}`
+            .toLowerCase()
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-')
+          data.slug = `${slugBase}-${new Date(data.lastReadDate).toISOString().split('T')[0]}`
+        }
+
+        return data
       },
     ],
     beforeChange: [

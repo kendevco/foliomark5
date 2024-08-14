@@ -11,10 +11,10 @@ export async function generateStaticParams() {
   const payload = await getPayloadHMR({ config: configPromise })
   const entries = await payload.find({
     collection: 'book-journal-entries',
-    limit: 1000,
+    limit: 100,
   })
 
-  return entries.docs?.map(({ slug }) => slug)
+  return entries.docs?.map(({ slug }) => ({ slug }))
 }
 
 export default async function BookJournalEntry({ params: { slug = '' } }) {
@@ -25,7 +25,6 @@ export default async function BookJournalEntry({ params: { slug = '' } }) {
   return (
     <article className="pt-16 pb-16">
       <BookJournalEntryHero bookJournalEntry={entry} />
-
       <div className="flex flex-col gap-4 pt-8">
         <div className="container">
           <RichText content={entry.review} />

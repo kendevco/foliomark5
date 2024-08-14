@@ -35,8 +35,7 @@ export const Card: React.FC<{
 
   const titleToUse = titleFromProps || bookTitle
   const sanitizedDescription = description?.replace(/\s/g, ' ') // replace non-breaking space with white space
-  const href = `/${relationTo}/${slug}`
-
+  const href = `/2sxc-Apps/2sxc-Book-Log/${slug}`
   return (
     <article
       className={cn(

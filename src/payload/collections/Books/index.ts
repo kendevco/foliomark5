@@ -6,7 +6,7 @@ import {
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 import { MediaBlock } from '../../blocks/MediaBlock'
-import { populateAuthors } from './hooks/populateAuthors'
+import slugify from 'slugify'
 
 const Books: CollectionConfig = {
   slug: 'books',
@@ -99,35 +99,31 @@ const Books: CollectionConfig = {
     },
   ],
   hooks: {
-    afterRead: [
-      populateAuthors,
-      async ({ doc, req }) => {
-        const journalEntries = await req.payload.find({
-          collection: 'book-journal-entries',
-          where: {
-            book: {
-              equals: doc.id,
-            },
-          },
-        })
-
-        const comments = await req.payload.find({
-          collection: 'book-comments',
-          where: {
-            book: {
-              equals: doc.id,
-            },
-          },
-        })
-
-        return {
-          ...doc,
-          journalEntries: journalEntries.docs,
-          comments: comments.docs,
+    beforeChange: [
+      async ({ data, req }) => {
+        if (data.title) {
+          const authorNames = await getAuthorNames(data.authors, req.payload)
+          const slugBase = `${data.title} - ${authorNames.join(' ')}`
+          data.slug = slugify(slugBase, { lower: true, strict: true })
         }
+        return data
       },
     ],
   },
+}
+
+async function getAuthorNames(authorIds, payload) {
+  const authorNames = []
+  for (const authorId of authorIds) {
+    const author = await payload.findByID({
+      collection: 'authors',
+      id: authorId,
+    })
+    if (author && author.name) {
+      authorNames.push(author.name)
+    }
+  }
+  return authorNames
 }
 
 export default Books
