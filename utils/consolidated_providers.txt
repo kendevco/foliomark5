@@ -1,0 +1,303 @@
+Consolidated Provider Files
+Generated on: 2024-08-11 13:26:24.795509
+
+
+
+==================================================
+File: index.tsx
+==================================================
+
+// src\app\providers\index.tsx
+
+import React from 'react'
+
+import { HeaderThemeProvider } from './HeaderTheme'
+import { ThemeProvider } from './Theme'
+
+export const Providers: React.FC<{
+  children: React.ReactNode
+}> = ({ children }) => {
+  return (
+    <ThemeProvider>
+      <HeaderThemeProvider>{children}</HeaderThemeProvider>
+    </ThemeProvider>
+  )
+}
+
+
+==================================================
+File: HeaderTheme\index.tsx
+==================================================
+
+'use client'
+
+import type { Theme } from '@/providers/Theme/types'
+
+import React, { createContext, useCallback, useContext, useState } from 'react'
+
+import canUseDOM from '../../utilities/canUseDOM'
+
+export interface ContextType {
+  headerTheme?: Theme | null
+  setHeaderTheme: (theme: Theme | null) => void  
+}
+
+const initialContext: ContextType = {
+  headerTheme: undefined,
+  setHeaderTheme: () => null,
+}
+
+const HeaderThemeContext = createContext(initialContext)
+
+export const HeaderThemeProvider = ({ children }: { children: React.ReactNode }) => {
+  const [headerTheme, setThemeState] = useState<Theme | undefined>(
+    canUseDOM ? (document.documentElement.getAttribute('data-theme') as Theme) : undefined,
+  )
+
+  const setHeaderTheme = useCallback((themeToSet: Theme | null) => {
+    setThemeState(themeToSet)
+  }, [])
+
+  return (
+    <HeaderThemeContext.Provider value={{ headerTheme, setHeaderTheme }}>
+      {children}
+    </HeaderThemeContext.Provider>
+  )
+}
+
+export const useHeaderTheme = (): ContextType => useContext(HeaderThemeContext)
+
+
+==================================================
+File: Theme\index.tsx
+==================================================
+
+// src\app\providers\Theme\index.tsx
+
+'use client'
+
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react'
+
+import type { Theme, ThemeContextType } from './types'
+
+import canUseDOM from '../../utilities/canUseDOM'
+import { defaultTheme, getImplicitPreference, themeLocalStorageKey } from './shared'
+import { themeIsValid } from './types'
+
+const initialContext: ThemeContextType = {
+  setTheme: () => null,
+  theme: undefined,
+}
+
+const ThemeContext = createContext(initialContext)
+
+export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
+  const [theme, setThemeState] = useState<Theme | undefined>(
+    canUseDOM ? (document.documentElement.getAttribute('data-theme') as Theme) : undefined,
+  )
+
+  const setTheme = useCallback((themeToSet: Theme | null) => {
+    if (themeToSet === null) {
+      window.localStorage.removeItem(themeLocalStorageKey)
+      const implicitPreference = getImplicitPreference()
+      document.documentElement.setAttribute('data-theme', implicitPreference || '')
+      if (implicitPreference) setThemeState(implicitPreference)
+    } else {
+      setThemeState(themeToSet)
+      window.localStorage.setItem(themeLocalStorageKey, themeToSet)
+      document.documentElement.setAttribute('data-theme', themeToSet)
+    }
+  }, [])
+
+  useEffect(() => {
+    let themeToSet: Theme = defaultTheme
+    const preference = window.localStorage.getItem(themeLocalStorageKey)
+
+    if (themeIsValid(preference)) {
+      themeToSet = preference
+    } else {
+      const implicitPreference = getImplicitPreference()
+
+      if (implicitPreference) {
+        themeToSet = implicitPreference
+      }
+    }
+
+    document.documentElement.setAttribute('data-theme', themeToSet)
+    setThemeState(themeToSet)
+  }, [])
+
+  return <ThemeContext.Provider value={{ setTheme, theme }}>{children}</ThemeContext.Provider>
+}
+
+export const useTheme = (): ThemeContextType => useContext(ThemeContext)
+
+
+==================================================
+File: Theme\shared.ts
+==================================================
+
+// src\app\providers\Theme\shared.ts
+
+import type { Theme } from './types'
+
+export const themeLocalStorageKey = 'payload-theme'
+
+export const defaultTheme = 'light'
+
+export const getImplicitPreference = (): Theme | null => {
+  const mediaQuery = '(prefers-color-scheme: dark)'
+  const mql = window.matchMedia(mediaQuery)
+  const hasImplicitPreference = typeof mql.matches === 'boolean'
+
+  if (hasImplicitPreference) {
+    return mql.matches ? 'dark' : 'light'
+  }
+
+  return null
+}
+
+
+==================================================
+File: Theme\types.ts
+==================================================
+
+// src\app\providers\Theme\types.ts
+
+export type Theme = 'dark' | 'light'
+
+export interface ThemeContextType {
+  setTheme: (theme: Theme | null) => void // eslint-disable-line no-unused-vars
+  theme?: Theme | null
+}
+
+export function themeIsValid(string: null | string): string is Theme {
+  return string ? ['dark', 'light'].includes(string) : false
+}
+
+
+==================================================
+File: Theme\InitTheme\index.tsx
+==================================================
+
+// src\app\providers\Theme\InitTheme\index.tsx
+
+import Script from 'next/script'
+import React from 'react'
+
+import { defaultTheme, themeLocalStorageKey } from '../ThemeSelector/types'
+
+export const InitTheme: React.FC = () => {
+  return (
+    // eslint-disable-next-line @next/next/no-before-interactive-script-outside-document
+    <Script
+      dangerouslySetInnerHTML={{
+        __html: `
+  (function () {
+    function getImplicitPreference() {
+      var mediaQuery = '(prefers-color-scheme: dark)'
+      var mql = window.matchMedia(mediaQuery)
+      var hasImplicitPreference = typeof mql.matches === 'boolean'
+
+      if (hasImplicitPreference) {
+        return mql.matches ? 'dark' : 'light'
+      }
+
+      return null
+    }
+
+    function themeIsValid(theme) {
+      return theme === 'light' || theme === 'dark'
+    }
+
+    var themeToSet = '${defaultTheme}'
+    var preference = window.localStorage.getItem('${themeLocalStorageKey}')
+
+    if (themeIsValid(preference)) {
+      themeToSet = preference
+    } else {
+      var implicitPreference = getImplicitPreference()
+
+      if (implicitPreference) {
+        themeToSet = implicitPreference
+      }
+    }
+
+    document.documentElement.setAttribute('data-theme', themeToSet)
+  })();
+  `,
+      }}
+      id="theme-script"
+      strategy="beforeInteractive"
+    />
+  )
+}
+
+
+==================================================
+File: Theme\ThemeSelector\index.tsx
+==================================================
+
+// src\app\providers\Theme\ThemeSelector\index.tsx
+
+'use client'
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import React, { useState } from 'react'
+
+import type { Theme } from './types'
+
+import { useTheme } from '..'
+import { themeLocalStorageKey } from './types'
+
+export const ThemeSelector: React.FC = () => {
+  const { setTheme } = useTheme()
+  const [value, setValue] = useState('')
+
+  const onThemeChange = (themeToSet: Theme & 'auto') => {
+    if (themeToSet === 'auto') {
+      setTheme(null)
+      setValue('auto')
+    } else {
+      setTheme(themeToSet)
+      setValue(themeToSet)
+    }
+  }
+
+  React.useEffect(() => {
+    const preference = window.localStorage.getItem(themeLocalStorageKey)
+    setValue(preference ?? 'auto')
+  }, [])
+
+  return (
+    <Select onValueChange={onThemeChange} value={value}>
+      <SelectTrigger className="w-auto gap-2 pl-0 bg-transparent border-none md:pl-3">
+        <SelectValue placeholder="Theme" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="auto">Auto</SelectItem>
+        <SelectItem value="light">Light</SelectItem>
+        <SelectItem value="dark">Dark</SelectItem>
+      </SelectContent>
+    </Select>
+  )
+}
+
+
+==================================================
+File: Theme\ThemeSelector\types.ts
+==================================================
+
+// src\app\providers\Theme\types.ts
+
+export type Theme = 'dark' | 'light'
+
+export const themeLocalStorageKey = 'payload-theme'
+
+export const defaultTheme = 'light'

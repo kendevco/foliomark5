@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // src\payload\utilities\formatSlug.ts
+=======
+>>>>>>> origin/main
 import type { FieldHook } from 'payload'
 
 const format = (val: string): string =>

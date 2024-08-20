@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // src\payload\fields\slug.ts
+=======
+>>>>>>> origin/main
 import type { Field } from 'payload'
 
 import deepMerge from '../utilities/deepMerge'

@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // src\app\components\CollectionArchive\index.tsx
+=======
+>>>>>>> origin/main
 import { cn } from '@/utilities/cn'
 import React, { Fragment } from 'react'
 

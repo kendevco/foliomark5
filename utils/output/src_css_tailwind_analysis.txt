@@ -1,0 +1,246 @@
+// Included files:
+// styles\globals.css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --radius: 0.5rem;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+// globals.css Analysis:
+// Tailwind directives found in globals.css
+
+
+
+// Excluded files:
+// payload-types.ts
+// payload.config.ts
+// app\cssVariables.js
+// app\_utilities.ts
+// app\(frontend)\layout.tsx
+// app\(frontend)\not-found.tsx
+// app\(frontend)\page.tsx
+// app\(frontend)\2sxc-Apps\2sxc-Book-Log\page.tsx
+// app\(frontend)\2sxc-Apps\2sxc-Book-Log\[slug]\page.tsx
+// app\(frontend)\posts\page.tsx
+// app\(frontend)\posts\page\[pageNumber]\page.tsx
+// app\(frontend)\posts\[slug]\page.client.tsx
+// app\(frontend)\posts\[slug]\page.tsx
+// app\(frontend)\[slug]\page.tsx
+// app\(payload)\custom.scss
+// app\(payload)\layout.tsx
+// app\(payload)\admin\[[...segments]]\not-found.tsx
+// app\(payload)\admin\[[...segments]]\page.tsx
+// app\(payload)\api\graphql\route.ts
+// app\(payload)\api\graphql-playground\route.ts
+// app\(payload)\api\[...slug]\route.ts
+// app\blocks\ArchiveBlock\index.tsx
+// app\blocks\ArchiveBlock\types.ts
+// app\blocks\Banner\index.tsx
+// app\blocks\CallToAction\index.tsx
+// app\blocks\Code\Code.client.tsx
+// app\blocks\Code\index.tsx
+// app\blocks\Content\index.tsx
+// app\blocks\Form\buildInitialFormState.tsx
+// app\blocks\Form\fields.tsx
+// app\blocks\Form\index.tsx
+// app\blocks\Form\Checkbox\index.tsx
+// app\blocks\Form\Country\index.tsx
+// app\blocks\Form\Country\options.ts
+// app\blocks\Form\Email\index.tsx
+// app\blocks\Form\Error\index.tsx
+// app\blocks\Form\Message\index.tsx
+// app\blocks\Form\Number\index.tsx
+// app\blocks\Form\Select\index.tsx
+// app\blocks\Form\State\index.tsx
+// app\blocks\Form\State\options.ts
+// app\blocks\Form\Text\index.tsx
+// app\blocks\Form\Textarea\index.tsx
+// app\blocks\Form\Width\index.tsx
+// app\blocks\MediaBlock\index.tsx
+// app\blocks\RelatedPosts\index.tsx
+// app\components\AdminBar\index.tsx
+// app\components\Blocks\index.tsx
+// app\components\BookJournalEntries\Card\index.tsx
+// app\components\BookJournalEntries\CollectionArchive\index.tsx
+// app\components\CollectionArchive\index.tsx
+// app\components\Footer\index.tsx
+// app\components\Header\index.client.tsx
+// app\components\Header\index.tsx
+// app\components\Header\Nav\index.tsx
+// app\components\Hero\index.tsx
+// app\components\Link\index.tsx
+// app\components\LivePreviewListener\index.tsx
+// app\components\Logo\Logo.tsx
+// app\components\Media\index.tsx
+// app\components\Media\types.ts
+// app\components\Media\ImageMedia\index.tsx
+// app\components\Media\VideoMedia\index.tsx
+// app\components\PageRange\index.tsx
+// app\components\Pagination\index.tsx
+// app\components\PayloadRedirects\index.tsx
+// app\components\Posts\Card\index.tsx
+// app\components\Posts\CollectionArchive\index.tsx
+// app\components\RichText\index.tsx
+// app\components\RichText\nodeFormat.tsx
+// app\components\RichText\serialize.tsx
+// app\components\ui\button.tsx
+// app\components\ui\card.tsx
+// app\components\ui\carousel.tsx
+// app\components\ui\checkbox.tsx
+// app\components\ui\input.tsx
+// app\components\ui\label.tsx
+// app\components\ui\pagination.tsx
+// app\components\ui\select.tsx
+// app\components\ui\textarea.tsx
+// app\heros\BookJournalEntryHero\index.tsx
+// app\heros\HighImpact\index.tsx
+// app\heros\LowImpact\index.tsx
+// app\heros\MediumImpact\index.tsx
+// app\heros\PostHero\index.tsx
+// app\next\exit-preview\GET.ts
+// app\next\exit-preview\route.ts
+// app\next\preview\route.ts
+// app\providers\index.tsx
+// app\providers\HeaderTheme\index.tsx
+// app\providers\Theme\index.tsx
+// app\providers\Theme\shared.ts
+// app\providers\Theme\types.ts
+// app\providers\Theme\InitTheme\index.tsx
+// app\providers\Theme\ThemeSelector\index.tsx
+// app\providers\Theme\ThemeSelector\types.ts
+// app\utilities\apiIntegration.ts
+// app\utilities\canUseDOM.ts
+// app\utilities\cn.ts
+// app\utilities\formatDateTime.ts
+// app\utilities\generateMeta.ts
+// app\utilities\getDocument.ts
+// app\utilities\getGlobals.ts
+// app\utilities\getMeUser.ts
+// app\utilities\getRedirects.ts
+// app\utilities\mergeOpenGraph.ts
+// app\utilities\slugGenerator.ts
+// app\utilities\toKebabCase.ts
+// app\utilities\useClickableCard.ts
+// payload\access\anyone.ts
+// payload\access\authenticated.ts
+// payload\access\authenticatedOrPublished.ts
+// payload\blocks\ArchiveBlock\index.ts
+// payload\blocks\Banner\index.ts
+// payload\blocks\CallToAction\index.ts
+// payload\blocks\Code\index.ts
+// payload\blocks\Content\index.ts
+// payload\blocks\Form\index.ts
+// payload\blocks\MediaBlock\index.ts
+// payload\collections\Categories.ts
+// payload\collections\Genres.ts
+// payload\collections\Media.ts
+// payload\collections\Authors\index.ts
+// payload\collections\BookComments\index.ts
+// payload\collections\BookJournalEntries\index.ts
+// payload\collections\BookJournalEntries\hooks\populateUsers.ts
+// payload\collections\Books\index.ts
+// payload\collections\Books\hooks\populateAuthors.ts
+// payload\collections\Books\hooks\revalidateBook.ts
+// payload\collections\Pages\index.ts
+// payload\collections\Pages\hooks\revalidatePage.ts
+// payload\collections\Posts\index.ts
+// payload\collections\Posts\hooks\populateAuthors.ts
+// payload\collections\Posts\hooks\revalidatePost.ts
+// payload\collections\Users\index.ts
+// payload\components\BeforeDashboard\index.scss
+// payload\components\BeforeDashboard\index.tsx
+// payload\components\BeforeDashboard\SeedButton\index.tsx
+// payload\components\BeforeLogin\index.tsx
+// payload\endpoints\seed.ts
+// payload\fields\hero.ts
+// payload\fields\link.ts
+// payload\fields\linkGroup.ts
+// payload\fields\slug.ts
+// payload\globals\Footer\Footer.ts
+// payload\globals\Footer\hooks\revalidateFooter.ts
+// payload\globals\Header\Header.ts
+// payload\globals\Header\hooks\revalidateHeader.ts
+// payload\hooks\formatSlug.ts
+// payload\hooks\populatePublishedAt.ts
+// payload\hooks\revalidateRedirects.ts
+// payload\seed\contact-form.ts
+// payload\seed\contact-page.ts
+// payload\seed\home-static.ts
+// payload\seed\home.ts
+// payload\seed\image-1.ts
+// payload\seed\image-2.ts
+// payload\seed\image-hero1.webp
+// payload\seed\image-post1.webp
+// payload\seed\image-post2.webp
+// payload\seed\image-post3.webp
+// payload\seed\index.ts
+// payload\seed\post-1.ts
+// payload\seed\post-2.ts
+// payload\seed\post-3.ts
+// payload\utilities\deepMerge.ts
+// payload\utilities\formatSlug.ts
+// payload\utilities\generatePreviewPath.ts

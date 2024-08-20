@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+// src/payload/collections/Posts/hooks/populateAuthors.ts
+>>>>>>> origin/main
 import type { CollectionAfterReadHook } from 'payload'
 
 // The `user` collection has access control locked so that users are not publicly accessible

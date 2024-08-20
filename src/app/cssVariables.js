@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+// src\app\cssVariables.js
+>>>>>>> origin/main
 // Keep these in sync with the CSS variables in the `_css` directory
 
 const cssVariables = {

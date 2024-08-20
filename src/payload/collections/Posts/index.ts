@@ -1,4 +1,8 @@
 // src/payload/collections/Posts/index.ts
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/main
 import type { CollectionConfig } from 'payload'
 
 import {

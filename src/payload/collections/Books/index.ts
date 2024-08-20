@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // src/payload/collections/Books/index.ts
+=======
+>>>>>>> origin/main
 import { CollectionConfig } from 'payload'
 import {
   FixedToolbarFeature,
@@ -7,7 +10,11 @@ import {
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 import { MediaBlock } from '../../blocks/MediaBlock'
+<<<<<<< HEAD
 import { slugField } from '../../fields/slug'
+=======
+import slugify from 'slugify'
+>>>>>>> origin/main
 
 const Books: CollectionConfig = {
   slug: 'books',
@@ -24,7 +31,10 @@ const Books: CollectionConfig = {
       type: 'text',
       required: true,
     },
+<<<<<<< HEAD
     slugField('title'),
+=======
+>>>>>>> origin/main
     {
       name: 'authors',
       type: 'relationship',
@@ -100,6 +110,35 @@ const Books: CollectionConfig = {
       hasMany: true,
     },
   ],
+<<<<<<< HEAD
+=======
+  hooks: {
+    beforeChange: [
+      async ({ data, req }) => {
+        if (data.title) {
+          const authorNames = await getAuthorNames(data.authors, req.payload)
+          const slugBase = `${data.title} - ${authorNames.join(' ')}`
+          data.slug = slugify(slugBase, { lower: true, strict: true })
+        }
+        return data
+      },
+    ],
+  },
+}
+
+async function getAuthorNames(authorIds, payload) {
+  const authorNames = []
+  for (const authorId of authorIds) {
+    const author = await payload.findByID({
+      collection: 'authors',
+      id: authorId,
+    })
+    if (author && author.name) {
+      authorNames.push(author.name)
+    }
+  }
+  return authorNames
+>>>>>>> origin/main
 }
 
 export default Books

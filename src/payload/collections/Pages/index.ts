@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // src/payload/collections/Posts/index.ts
+=======
+>>>>>>> origin/main
 import type { CollectionConfig } from 'payload'
 
 import { authenticated } from '../../access/authenticated'
