@@ -44,11 +44,7 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
-<<<<<<< HEAD
   return doc?.title ? `${doc.title} | KenDev.Co` : 'KenDev.Co'
-=======
-  return doc?.title ? `${doc.title} | KenDev.Co Payload Website` : 'KenDev.Co Payload Website'
->>>>>>> origin/main
 }
 
 const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
@@ -60,7 +56,6 @@ const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
 export default buildConfig({
   admin: {
     components: {
-<<<<<<< HEAD
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below and the import `BeforeLogin` statement on line 15.
       beforeLogin: ['/payload/components/BeforeLogin'],
@@ -70,10 +65,6 @@ export default buildConfig({
     },
     importMap: {
       baseDir: path.resolve(dirname),
-=======
-      beforeLogin: [BeforeLogin],
-      beforeDashboard: [BeforeDashboard],
->>>>>>> origin/main
     },
     user: Users.slug,
     livePreview: {
@@ -99,10 +90,7 @@ export default buildConfig({
       ],
     },
   },
-<<<<<<< HEAD
   // This config helps us configure global or default features that the other editors can inherit
-=======
->>>>>>> origin/main
   editor: lexicalEditor({
     features: () => {
       return [

@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-=======
-// src\app\providers\Theme\ThemeSelector\index.tsx
-
->>>>>>> origin/main
 'use client'
 
 import {
@@ -40,11 +35,7 @@ export const ThemeSelector: React.FC = () => {
 
   return (
     <Select onValueChange={onThemeChange} value={value}>
-<<<<<<< HEAD
       <SelectTrigger className="w-auto bg-transparent gap-2 pl-0 md:pl-3 border-none">
-=======
-      <SelectTrigger className="w-auto gap-2 pl-0 bg-transparent border-none md:pl-3">
->>>>>>> origin/main
         <SelectValue placeholder="Theme" />
       </SelectTrigger>
       <SelectContent>

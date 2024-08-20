@@ -21,15 +21,12 @@ import type { Page } from '../../../payload-types'
 export type NodeTypes =
   | DefaultNodeTypes
   | SerializedBlockNode<
-<<<<<<< HEAD
-      // @ts-ignore // TODO: Fix this
-=======
->>>>>>> origin/main
-      | Extract<Page['layout'][0], { blockType: 'cta' }>
-      | Extract<Page['layout'][0], { blockType: 'mediaBlock' }>
-      | BannerBlockProps
-      | CodeBlockProps
-    >
+    // @ts-ignore // TODO: Fix this
+    | Extract<Page['layout'][0], { blockType: 'cta' }>
+    | Extract<Page['layout'][0], { blockType: 'mediaBlock' }>
+    | BannerBlockProps
+    | CodeBlockProps
+  >
 
 type Props = {
   nodes: NodeTypes[]
@@ -162,7 +159,7 @@ export function serializeLexical({ nodes }: Props): JSX.Element {
               if (node?.checked != null) {
                 return (
                   <li
-                    aria-checked={node.checked ? 'true' : 'false'}
+                    aria-checked={node.checked}
                     className={` ${node.checked ? '' : ''}`}
                     key={index}
                     // eslint-disable-next-line jsx-a11y/no-noninteractive-element-to-interactive-role

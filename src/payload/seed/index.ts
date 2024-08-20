@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-=======
-// src\payload\seed\index.ts
-
->>>>>>> origin/main
 import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest } from 'payload'
 
 import fs from 'fs'

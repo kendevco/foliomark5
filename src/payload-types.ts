@@ -42,10 +42,7 @@ export interface Config {
 export interface UserAuthOperations {
   forgotPassword: {
     email: string;
-<<<<<<< HEAD
     password: string;
-=======
->>>>>>> origin/main
   };
   login: {
     email: string;
@@ -57,10 +54,7 @@ export interface UserAuthOperations {
   };
   unlock: {
     email: string;
-<<<<<<< HEAD
     password: string;
-=======
->>>>>>> origin/main
   };
 }
 /**
@@ -535,11 +529,7 @@ export interface Form {
 export interface Genre {
   id: string;
   title: string;
-<<<<<<< HEAD
   slug?: string | null;
-=======
-  slug: string;
->>>>>>> origin/main
   updatedAt: string;
   createdAt: string;
 }
@@ -563,10 +553,7 @@ export interface BookComment {
 export interface Book {
   id: string;
   title: string;
-<<<<<<< HEAD
   slug?: string | null;
-=======
->>>>>>> origin/main
   authors: (string | Author)[];
   description?: {
     root: {
@@ -611,11 +598,7 @@ export interface Book {
 export interface Author {
   id: string;
   name: string;
-<<<<<<< HEAD
   slug?: string | null;
-=======
-  slug: string;
->>>>>>> origin/main
   bio?: string | null;
   books?: (string | Book)[] | null;
   updatedAt: string;
@@ -627,10 +610,7 @@ export interface Author {
  */
 export interface BookJournalEntry {
   id: string;
-<<<<<<< HEAD
   customTitle?: string | null;
-=======
->>>>>>> origin/main
   book: string | Book;
   user: string | User;
   review: {
@@ -666,11 +646,7 @@ export interface BookJournalEntry {
     image?: string | Media | null;
     description?: string | null;
   };
-<<<<<<< HEAD
   slug?: string | null;
-=======
-  slug: string;
->>>>>>> origin/main
   updatedAt: string;
   createdAt: string;
 }
