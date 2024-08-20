@@ -1,4 +1,4 @@
-// src/app/2sxc-Apps/2sxc-Book-Log/details/[slug]/page.tsx
+// src/app/2sxc-Apps/2sxc-Book-Log/[slug]/page.tsx
 
 import React from 'react'
 import { BookJournalEntryHero } from '../../../../../heros/BookJournalEntryHero'
@@ -6,9 +6,6 @@ import { PayloadRedirects } from '@/components/PayloadRedirects'
 import configPromise from '@payload-config'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import RichText from 'src/app/components/RichText'
-
-import { Metadata } from 'next'
-import { generateMeta } from '../../../../../utilities/generateMeta'
 
 export async function generateStaticParams() {
   const payload = await getPayloadHMR({ config: configPromise })
@@ -18,11 +15,6 @@ export async function generateStaticParams() {
   })
 
   return entries.docs?.map(({ slug }) => ({ slug }))
-}
-
-export async function generateMetadata({ params: { slug } }): Promise<Metadata> {
-  const entry = await queryEntryBySlug({ slug })
-  return generateMeta({ doc: entry as any })
 }
 
 export default async function BookJournalEntry({ params: { slug = '' } }) {

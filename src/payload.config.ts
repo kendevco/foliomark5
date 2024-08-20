@@ -6,6 +6,7 @@ import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
+// import { sentry } from '@payloadcms/plugin-sentry'
 import {
   BoldFeature,
   FixedToolbarFeature,
@@ -150,6 +151,9 @@ export default buildConfig({
   ],
   globals: [Header, Footer],
   plugins: [
+    // sentry({
+    //   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+    // }),
     redirectsPlugin({
       collections: ['pages', 'posts'],
       overrides: {
