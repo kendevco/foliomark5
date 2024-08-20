@@ -1,0 +1,210 @@
+
+// app\(app)\Header.tsx
+import { FilmIcon } from 'lucide-react'
+import Link from 'next/link'
+export default function Header() {
+ return (
+ <header className="flex gap-2 py-5 px-5 bg-slate-900 text-white rounded-b-xl items-center">
+ <FilmIcon />
+ <Link href="/" className="text-xl font-bold">
+ <h1>Our Favorite Movies</h1>
+ </Link>{' '}
+ |
+ <Link href="/add" className="text-xl font-light">
+ Add A Movie
+ </Link>
+ </header>
+ )
+}
+// app\(app)\layout.tsx
+import React from 'react'
+import './globals.scss'
+import Header from './Header'
+/* Our app sits here to not cause any conflicts with payload's root layout */
+const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+ return (
+ <html className="dark mx-auto max-w-[1200px]">
+ <body>
+ <Header />
+ {children}
+ </body>
+ </html>
+ )
+}
+export default Layout
+// app\(app)\MovieCards.tsx
+'use client'
+import React, { useState } from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
+import type { Movie, Media } from 'payload-types'
+import { VoteIcon, ThumbsUpIcon } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { addVote } from '@/movies'
+export default function MovieCards({ movies: initialMovies }: { movies: Movie[] }) {
+ const [movies, setMovies] = useState<Movie[]>(initialMovies)
+ return (
+ <div className="flex flex-wrap gap-3">
+ {movies.map((movie) => (
+ <React.Fragment key={movie.id}>
+ <Card className="md:max-w-72">
+ <CardHeader>
+ <CardTitle>{movie.name}</CardTitle>
+ </CardHeader>
+ <CardContent className="flex flex-col gap-3">
+ <Link href={`/movie/${movie.slug}`}>
+ <Image
+ src={(movie.poster as Media)?.url ?? ''}
+ alt={(movie.poster as Media)?.text ?? ''}
+ width={(movie.poster as Media)?.width ?? 100}
+ height={(movie.poster as Media)?.height ?? 100}
+ />
+ </Link>
+ <div className="flex justify-between items-center">
+ <div className="flex gap-2 items-center">
+ <ThumbsUpIcon />
+ <div>{movie.votes}</div>
+ </div>
+ <Button
+ onClick={async () => {
+ setMovies(await addVote(movie.id))
+ }}
+ >
+ <VoteIcon /> Vote
+ </Button>
+ </div>
+ </CardContent>
+ </Card>
+ </React.Fragment>
+ ))}
+ </div>
+ )
+}
+// app\(app)\page.tsx
+import React from 'react'
+import { getPayloadHMR } from '@payloadcms/next/utilities'
+import configPromise from '@payload-config'
+import MovieCards from './MovieCards'
+const Page = async () => {
+ const payload = await getPayloadHMR({ config: configPromise })
+ const movies = await payload.find({
+ collection: 'movies',
+ sort: '-votes',
+ })
+ return (
+ <>
+ <main className="mt-5">
+ <MovieCards movies={movies.docs} />
+ </main>
+ </>
+ )
+}
+export default Page
+// app\(app)\add\page.tsx
+'use client'
+import { useState, useEffect } from 'react'
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import {
+ Carousel,
+ CarouselContent,
+ CarouselItem,
+ CarouselNext,
+ CarouselPrevious,
+} from '@/components/ui/carousel'
+import { posterURL } from '@/movies/utils'
+import { addMovieAction } from '@/movies'
+export default function Page() {
+ const [query, setQuery] = useState('')
+ const [movies, setMovies] = useState<{ id: number; poster_path: string; title: string }[]>([])
+ useEffect(() => {
+ fetch(`/api/search?query=${encodeURIComponent(query)}`)
+ .then((res) => res.json())
+ .then(setMovies)
+ }, [query])
+ const router = useRouter()
+ async function addMovie(id: number) {
+ await addMovieAction(id)
+ router.push(`/`)
+ }
+ return (
+ <main className="mt-5">
+ <div className="mb-8">
+ <Input value={query} onChange={(e) => setQuery(e.target.value)} />
+ </div>
+ {movies.length > 0 ? (
+ <Carousel>
+ <CarouselContent>
+ {movies.map(({ id, poster_path, title }) => (
+ <CarouselItem key={id} className="basis-1/6 flex flex-col">
+ <Image
+ src={posterURL(poster_path)}
+ alt={title ?? ''}
+ width={600}
+ height={900}
+ className="w-full aspect-[6/9] object-cover"
+ />
+ <h1 className="text-center font-bold truncate text-xl my-5">{title}</h1>
+ <Button onClick={() => addMovie(id)}>Add</Button>
+ </CarouselItem>
+ ))}
+ </CarouselContent>
+ <CarouselPrevious />
+ <CarouselNext />
+ </Carousel>
+ ) : (
+ <p className="text-2xl">Type in a query to find movies</p>
+ )}
+ </main>
+ )
+}
+// app\(app)\api\search\route.ts
+import { NextRequest, NextResponse } from 'next/server'
+import { searchMovies } from '@/movies'
+export async function GET(request: NextRequest) {
+ const searchParams = request.nextUrl.searchParams
+ const query = searchParams.get('query') ?? ''
+ return NextResponse.json(await searchMovies(query))
+}
+// app\(app)\movie\[slug]\page.tsx
+import Image from 'next/image'
+import { notFound } from 'next/navigation'
+import type { Media } from 'payload-types'
+import { getPayloadHMR } from '@payloadcms/next/utilities'
+import configPromise from '@payload-config'
+export default async function MovieDetails({ params }: { params: { slug: string } }) {
+ const { slug } = params
+ const payload = await getPayloadHMR({ config: configPromise })
+ const movies = await payload.find({
+ collection: 'movies',
+ where: {
+ slug: { equals: slug },
+ },
+ })
+ if (movies.docs.length === 0) {
+ return notFound()
+ }
+ const movie = movies.docs[0]
+ return (
+ <div className="flex gap-2 mt-5">
+ <Image
+ src={(movie.poster as Media)?.url ?? ''}
+ alt={(movie.poster as Media)?.text ?? ''}
+ width={(movie.poster as Media)?.width ?? 100}
+ height={(movie.poster as Media)?.height ?? 100}
+ className="w-1/3 rounded-3xl"
+ />
+ <div className="flex flex-col gap-2 w-2/3">
+ <h1 className="font-bold text-4xl border-b-2">{movie.name}</h1>
+ {movie.tagline && <h2 className="font-light text-3xl mb-3">{movie.tagline}</h2>}
+ <p className="font-light mb-3 text-right">
+ {movie.genres.map(({ name }) => name).join(', ')}
+ </p>
+ <p className="italic">{movie.overview}</p>
+ </div>
+ </div>
+ )
+}
