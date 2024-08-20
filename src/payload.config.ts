@@ -1,7 +1,7 @@
 // This is a modification of the file so I can check it back in to make a new push.
 // storage-adapter-import-placeholder
 import { mongooseAdapter } from '@payloadcms/db-mongodb' // database-adapter-import
-import { payloadCloudPlugin } from '@payloadcms/plugin-cloud'
+// import { payloadCloudPlugin } from '@payloadcms/plugin-cloud'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
@@ -31,8 +31,8 @@ import BookJournalEntries from './payload/collections/BookJournalEntries'
 import Books from './payload/collections/Books'
 import Users from './payload/collections/Users'
 import Authors from './payload/collections/Authors'
-import BeforeDashboard from './payload/components/BeforeDashboard'
-import BeforeLogin from './payload/components/BeforeLogin'
+// import BeforeDashboard from './payload/components/BeforeDashboard'
+// import BeforeLogin from './payload/components/BeforeLogin'
 import { seed } from './payload/endpoints/seed'
 import { Footer } from './payload/globals/Footer/Footer'
 import { Header } from './payload/globals/Header/Header'
