@@ -32,21 +32,12 @@ export const ArchiveBlock: React.FC<
       limit,
       ...(flattenedCategories && flattenedCategories.length > 0
         ? {
-<<<<<<< HEAD
             where: {
               categories: {
                 in: flattenedCategories,
               },
             },
           }
-=======
-          where: {
-            categories: {
-              in: flattenedCategories,
-            },
-          },
-        }
->>>>>>> origin/main
         : {}),
     })
 
