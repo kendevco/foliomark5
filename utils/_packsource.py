@@ -1,6 +1,7 @@
 import os
 import sys
 import fnmatch
+import re
 
 # Always use the root\utils directory
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -13,6 +14,8 @@ EXCLUDE_FOLDERS = ['.next', 'node_modules', '.vscode', '.git', '.contentlayer', 
 EXCLUDE_FILES = ['package-lock.json', '*.log', '*.lock', '*.env', '*.test.js', '*.spec.js', '*.map', 'pnpm-lock.yaml', 'pnpm-workspace.yaml']
 INCLUDE_SUBDIRS = ['(app)', '(frontend)']
 MOVIE_RELATED_FILES = ['MovieCards.tsx', 'route.ts', 'add/page.tsx', 'movie/[slug]/page.tsx']
+
+DEPENDENCY_PATTERN = r"import\s+.*?from\s+['\"]([^'\"]+)['\"]"
 
 def get_all_files(root_dir):
     all_files = []
@@ -43,14 +46,30 @@ def get_all_files(root_dir):
 
     return all_files, included_files, excluded_files
 
+def extract_dependencies(file_path):
+    dependencies = set()
+    with open(file_path, 'r', encoding='utf-8') as f:
+        content = f.read()
+        matches = re.findall(DEPENDENCY_PATTERN, content)
+        for match in matches:
+            if not match.startswith('.'):
+                dependencies.add(match.split('/')[0])  # Get only the package name, not submodules
+    return dependencies
+
 def write_source_files(included_files, excluded_files, output_file, root_dir):
+    all_dependencies = set()
     with open(output_file, 'w', encoding='utf-8') as f:
         f.write(f"// Included files:\n")
         for file in included_files:
             f.write(f"// {file}\n")
             try:
-                with open(os.path.join(root_dir, file), 'r', encoding='utf-8') as source_file:
+                file_path = os.path.join(root_dir, file)
+                with open(file_path, 'r', encoding='utf-8') as source_file:
                     f.write(source_file.read())
+
+                # Extract and accumulate dependencies
+                dependencies = extract_dependencies(file_path)
+                all_dependencies.update(dependencies)
             except Exception as e:
                 f.write(f"// Error reading file: {str(e)}\n")
             f.write('\n\n')
@@ -59,36 +78,42 @@ def write_source_files(included_files, excluded_files, output_file, root_dir):
         for file in excluded_files:
             f.write(f"// {file}\n")
 
+    return all_dependencies
+
 def process_directory(dir_name, dir_path):
     all_files, included_files, excluded_files = get_all_files(dir_path)
 
     if all_files:
         output_file = os.path.join(OUTPUT_DIR, f'{dir_name}_source_files.txt')
-        write_source_files(included_files, excluded_files, output_file, dir_path)
+        dependencies = write_source_files(included_files, excluded_files, output_file, dir_path)
         print(f"Files from {dir_name} have been processed and written to: {output_file}")
         print(f"  Included files: {len(included_files)}")
         print(f"  Excluded files: {len(excluded_files)}")
     else:
         print(f"No files found in {dir_name}")
 
-    return dir_path, (included_files, excluded_files)
+    return dir_path, (included_files, excluded_files), dependencies
 
 def generate_summary(processed_dirs):
     summary_file = os.path.join(OUTPUT_DIR, 'summary.txt')
     with open(summary_file, 'w', encoding='utf-8') as f:
         f.write("Application Structure Summary:\n\n")
-        for dir_name, (dir_path, (included_files, excluded_files)) in processed_dirs.items():
+        all_dependencies = set()
+        for dir_name, (dir_path, (included_files, excluded_files), dependencies) in processed_dirs.items():
             all_files = included_files + excluded_files
             f.write(f"{dir_name}:\n")
             f.write(f"  Total files: {len(all_files)}\n")
             f.write(f"  Included files: {len(included_files)}\n")
-            f.write(f"  Excluded files: {len(excluded_files)}\n\n")
+            f.write(f"  Excluded files: {len(excluded_files)}\n")
+            f.write(f"  Dependencies: {', '.join(sorted(dependencies))}\n\n")
+            all_dependencies.update(dependencies)
+        f.write(f"All dependencies:\n{', '.join(sorted(all_dependencies))}\n")
     print(f"Summary has been written to: {summary_file}")
 
 def combine_all_files(processed_dirs):
     combined_file = os.path.join(OUTPUT_DIR, 'all_source_files_combined.txt')
     with open(combined_file, 'w', encoding='utf-8') as f:
-        for dir_name, (dir_path, (included_files, excluded_files)) in processed_dirs.items():
+        for dir_name, (dir_path, (included_files, excluded_files), _) in processed_dirs.items():
             f.write(f"// Files from {dir_name}:\n\n")
             for file in included_files:
                 f.write(f"// {file}\n")

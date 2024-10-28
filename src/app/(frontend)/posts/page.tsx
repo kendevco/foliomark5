@@ -1,13 +1,12 @@
-// src\app\posts\page.tsx
-
 import type { Metadata } from 'next/types'
 
-import { CollectionArchive } from '@/components/Posts/CollectionArchive'
+import { CollectionArchive } from '@/components/CollectionArchive'
 import { PageRange } from '@/components/PageRange'
 import { Pagination } from '@/components/Pagination'
 import configPromise from '@payload-config'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import React from 'react'
+import PageClient from './page.client'
 
 export const dynamic = 'force-static'
 export const revalidate = 600
@@ -19,10 +18,12 @@ export default async function Page() {
     collection: 'posts',
     depth: 1,
     limit: 12,
+    overrideAccess: false,
   })
 
   return (
     <div className="pt-24 pb-24">
+      <PageClient />
       <div className="container mb-16">
         <div className="prose dark:prose-invert max-w-none">
           <h1>Posts</h1>
@@ -41,7 +42,9 @@ export default async function Page() {
       <CollectionArchive posts={posts.docs} />
 
       <div className="container">
-        {posts.totalPages > 1 && <Pagination page={posts.page} totalPages={posts.totalPages} />}
+        {posts.totalPages > 1 && posts.page && (
+          <Pagination page={posts.page} totalPages={posts.totalPages} />
+        )}
       </div>
     </div>
   )

@@ -11,10 +11,12 @@
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
+    "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "incremental": true,
     "jsx": "preserve",
+    "jsxImportSource": "react",
     "module": "esnext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
@@ -33,9 +35,10 @@
         "./node_modules/@types/react"
       ],
       "@/*": [
-        "./src/app/*"
+        "./src/*"
       ]
-    }
+    },
+    "tsBuildInfoFile": "./tsbuildinfo"
   },
   "include": [
     "**/*.ts",

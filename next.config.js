@@ -6,20 +6,32 @@ const NEXT_PUBLIC_SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://loc
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  images: {
-    remotePatterns: [
-      ...[NEXT_PUBLIC_SERVER_URL /* 'https://example.com' */].map((item) => {
-        const url = new URL(item)
+  webpack: (config, { dev, isServer }) => {
+    // Prevent cache issues in development
+    if (dev) {
+      config.cache = false
+    }
 
-        return {
-          hostname: url.hostname,
-          protocol: url.protocol.replace(':', ''),
-        }
-      }),
-    ],
+    // Add module aliases
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@/spaces': './src/spaces',
+      '@/components': './src/components',
+      '@/lib': './src/lib'
+    }
+
+    return config
   },
-  reactStrictMode: true,
-  redirects,
+  // Optimize for development
+  experimental: {
+    optimizeCss: true,
+    turbo: true,
+  },
+  // Image domains
+  images: {
+    domains: ['localhost', 'your-production-domain.com'],
+    unoptimized: process.env.NODE_ENV === 'development'
+  }
 }
 
 export default withPayload(nextConfig)
