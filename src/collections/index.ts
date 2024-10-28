@@ -1,17 +1,32 @@
 import { CollectionConfig } from 'payload'
+import Profiles from '@/spaces/collections/Profiles'
+import Spaces from '@/spaces/collections/Spaces'
+import Members from '@/spaces/collections/Members'
+import Channels from '@/spaces/collections/Channels'
+import Messages from '@/spaces/collections/Messages'
+import Conversations from '@/spaces/collections/Conversations'
+import DirectMessages from '@/spaces/collections/DirectMessages'
+import { SpacesMedia } from '@/spaces/collections/SpacesMedia'
 
-// Core collections
-import Users from './Users'
-import { Media } from './Media'
-import { Pages } from './Pages'
-import { Posts } from './Posts'
-import Categories from './Categories'
+export const collections: CollectionConfig[] = [
+  Profiles,
+  Spaces,
+  Members,
+  Channels,
+  Messages,
+  Conversations,
+  DirectMessages,
+  SpacesMedia,
+]
 
-// Spaces collections
-import { Spaces } from './Spaces'
-
-// Export collections grouped by feature
-export const collections: CollectionConfig[] = [Users, Media, Pages, Posts, Categories, Spaces]
-
-export * from './Spaces'
-export { Users, Media, Pages, Posts, Categories }
+// Re-export collections
+export {
+  Profiles,
+  Spaces,
+  Members,
+  Channels,
+  Messages,
+  Conversations,
+  DirectMessages,
+  SpacesMedia,
+}

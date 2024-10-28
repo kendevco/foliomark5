@@ -3,9 +3,9 @@
 import { useEffect, useState } from "react";
 import { Space } from "@/payload-types";
 import { SpaceSidebar } from "./space-sidebar";
-import { ChatHeader } from "../chat/chat-header";
-import { ChatInput } from "../chat/chat-input";
-import { ChatMessages } from "../chat/chat-messages";
+import { ChatHeader } from "../components/chat/chat-header";
+import { ChatInput } from "../components/chat/chat-input";
+import { ChatMessages } from "../components/chat/chat-messages";
 import { MemberRole } from '@/spaces/collections/types';
 
 interface SpaceLayoutProps {

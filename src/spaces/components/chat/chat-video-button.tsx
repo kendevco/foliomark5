@@ -1,4 +1,4 @@
-// path: src/components/Spaces/chat/chat-video-button.tsx
+// path: src/spaces/components/chat/chat-video-button.tsx
 "use client";
 
 import qs from "query-string";

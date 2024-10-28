@@ -1,11 +1,11 @@
-import Profiles from '../Profiles'
-import Spaces from '../Spaces'
-import Members from '../Members'
-import Channels from '../Channels'
-import Messages from '../Messages'
-import Conversations from '../Conversations'
-import DirectMessages from '../DirectMessages'
-import Media from '../Media'
+import Profiles from '@/spaces/collections/Profiles'
+import Spaces from '@/spaces/collections/Spaces'
+import Members from '@/spaces/collections/Members'
+import Channels from '@/spaces/collections/Channels'
+import Messages from '@/spaces/collections/Messages'
+import Conversations from '@/spaces/collections/Conversations'
+import DirectMessages from '@/spaces/collections/DirectMessages'
+import { SpacesMedia } from '@/spaces/collections/SpacesMedia'
 
 export {
   Profiles,
@@ -15,5 +15,5 @@ export {
   Messages,
   Conversations,
   DirectMessages,
-  Media,
+  SpacesMedia,
 }

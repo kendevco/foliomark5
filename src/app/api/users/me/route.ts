@@ -1,12 +1,11 @@
 import { NextResponse } from 'next/server'
 import { headers } from 'next/headers'
 import getPayloadClient from '@/spaces/utilities/getPayloadClient'
-import { getCurrentUserWithProfile } from '@/spaces/utilities'
+import { getUserWithProfile } from '@/spaces/utilities/getUserWithProfile'
 
 export async function GET() {
   try {
-    const payload = await getPayloadClient()
-    const user = await getCurrentUserWithProfile(payload)
+    const user = await getUserWithProfile()
 
     if (!user) {
       return new Response('User not found', { status: 404 })

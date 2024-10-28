@@ -5,9 +5,9 @@ export * from './collections'
 // Components
 export * from './components/action-tooltip'
 export * from './components/emoji-picker'
-export * from './chat/chat-header'
-export * from './chat/chat-input'
-export * from './chat/chat-messages'
+export * from './components/chat/chat-header'
+export * from './components/chat/chat-input'
+export * from './components/chat/chat-messages'
 
 // Access control
 export * from './access/isAdmin'

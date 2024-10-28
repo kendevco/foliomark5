@@ -1,4 +1,4 @@
-// path: src/components/Spaces/chat/chat-messages.tsx
+// path: src/spaces/components/chat/chat-messages.tsx
 "use client";
 
 import { Fragment, useRef, ElementRef } from "react";

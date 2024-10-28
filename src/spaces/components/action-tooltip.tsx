@@ -1,4 +1,4 @@
-// path: src/components/Spaces/action-tooltip.tsx
+// path: src/spaces/components/action-tooltip.tsx
 "use client";
 
 import * as React from "react";

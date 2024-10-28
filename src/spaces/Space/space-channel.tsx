@@ -1,4 +1,4 @@
-// path: src/components/Spaces/Space/space-channel.tsx
+// path: src/spaces/components/Space/space-channel.tsx
 "use client";
 
 import { cn } from '@/utilities/cn';

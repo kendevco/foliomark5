@@ -1,4 +1,4 @@
-// path: src/components/Spaces/chat/chat-item.tsx
+// path: src/spaces/components/chat/chat-item.tsx
 "use client";
 
 import { useState, useEffect } from "react";

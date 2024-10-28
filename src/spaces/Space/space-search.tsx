@@ -1,4 +1,4 @@
-// path: src/components/Spaces/Space/space-search.tsx
+// path: src/spaces/components/Space/space-search.tsx
 "use client";
 
 import { Search } from "lucide-react";
@@ -13,7 +13,7 @@ import {
     CommandList,
     CommandSeparator,
     CommandShortcut,
-  } from "@/components/ui/command"
+} from "@/components/ui/command"
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
@@ -26,7 +26,7 @@ interface SpaceSearchProps {
             name: string;
             id: string;
         }[] | undefined;
-    } []
+    }[]
 }
 
 export const SpaceSearch = ({
@@ -39,7 +39,7 @@ export const SpaceSearch = ({
 
     useEffect(() => {
         const down = (e: KeyboardEvent) => {
-            if (e.key === "k" && e.ctrlKey ) {
+            if (e.key === "k" && e.ctrlKey) {
                 e.preventDefault();
                 setOpen((open) => !open);
             }
@@ -49,7 +49,7 @@ export const SpaceSearch = ({
         return () => document.removeEventListener("keydown", down);
     }, []);
 
-    const onClick = ( {id, type}: { id:string, type: "channel" | "member"}) => {
+    const onClick = ({ id, type }: { id: string, type: "channel" | "member" }) => {
         setOpen(false);
         if (type === "member") {
             return router.push(`/spaces/${params?.spaceId}/conversations/${id}`)
@@ -76,13 +76,13 @@ export const SpaceSearch = ({
                 <kbd
                     className="pointer-events-none inline-flex h-5 select-none items-center gap-1
                     rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground ml-auto"
-                    >
+                >
                     <span className="text-xs text-zinc-500 dark:text-zinc-400">⌘</span> K
                 </kbd>
             </button>
 
             <CommandDialog open={open} onOpenChange={setOpen}>
-            <CommandInput placeholder="Search all channels and members" />
+                <CommandInput placeholder="Search all channels and members" />
                 <CommandList>
                     <CommandEmpty>
                         No results found.
@@ -93,7 +93,7 @@ export const SpaceSearch = ({
                             <CommandGroup key={label} heading={label}>
                                 {data?.map(({ id, icon, name }) => {
                                     return (
-                                        <CommandItem key={id} onSelect = {() => onClick({id, type})} >
+                                        <CommandItem key={id} onSelect={() => onClick({ id, type })} >
                                             {icon}
                                             <span className="ml-2">{name}</span>
                                         </CommandItem>

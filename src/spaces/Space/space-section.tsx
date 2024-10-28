@@ -1,4 +1,4 @@
-// path: src/components/Spaces/Space/space-section.tsx
+// path: src/spaces/components/Space/space-section.tsx
 "use client";
 
 import { ServerCrash, Plus } from "lucide-react";

@@ -1,4 +1,4 @@
-// path: src/components/Spaces/navigation/navigation-action.tsx
+// path: src/spaces/components/navigation/navigation-action.tsx
 "use client";
 
 import { Plus } from "lucide-react";

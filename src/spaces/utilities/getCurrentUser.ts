@@ -4,7 +4,7 @@ import { User } from '@/payload-types'
 
 export const getCurrentUser = async (): Promise<User | null> => {
   try {
-    const cookieStore = await cookies()
+    const cookieStore = cookies()
     const token = cookieStore.get('payload-token')?.value
 
     if (!token) return null

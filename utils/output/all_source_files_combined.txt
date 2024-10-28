@@ -121,7 +121,7 @@ export function cn(...inputs: ClassValue[]) {
     --success: 196 100% 14%;
     --warning: 34 51% 25%;
     --error: 10 39% 43%;
-    
+
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
@@ -264,7 +264,7 @@ import { BookJournalEntryHero } from '../../../../../heros/BookJournalEntryHero'
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import configPromise from '@payload-config'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
-import RichText from 'src/app/components/RichText'
+import RichText from '@/app/components/RichText'
 
 export async function generateStaticParams() {
   const payload = await getPayloadHMR({ config: configPromise })
@@ -471,7 +471,7 @@ import configPromise from '@payload-config'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import { draftMode, headers } from 'next/headers'
 import React, { cache } from 'react'
-import RichText from 'src/app/components/RichText'
+import RichText from '@/app/components/RichText'
 
 import type { Post } from '../../../../payload-types'
 
@@ -560,12 +560,12 @@ import configPromise from '@payload-config'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import { draftMode, headers } from 'next/headers'
 import React, { cache } from 'react'
-import { homeStatic } from 'src/payload/seed/home-static'
+import { homeStatic } from '@/payload/seed/home-static'
 
 import type { Page as PageType } from '../../../payload-types'
 
-import { Blocks } from '../../components/Blocks'
-import { Hero } from '../../components/Hero'
+import { Blocks } from '@/components/Blocks'
+import { Hero } from '@/components/Hero'
 import { generateMeta } from '../../utilities/generateMeta'
 
 export async function generateStaticParams() {
@@ -748,16 +748,16 @@ export const OPTIONS = REST_OPTIONS(config)
 
 
 // app\blocks\ArchiveBlock\index.tsx
-import type { Post } from 'src/payload-types'
+import type { Post } from '@/payload-types'
 
 import configPromise from '@payload-config'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import React from 'react'
-import RichText from 'src/app/components/RichText'
+import RichText from '@/app/components/RichText'
 
 import type { ArchiveBlockProps } from './types'
 
-import { CollectionArchive } from '../../components/Posts/CollectionArchive'
+import { CollectionArchive } from '@/components/Posts/CollectionArchive'
 
 export const ArchiveBlock: React.FC<
   ArchiveBlockProps & {
@@ -818,11 +818,11 @@ export type ArchiveBlockProps = Extract<Page['layout'][0], { blockType: 'archive
 
 
 // app\blocks\Banner\index.tsx
-import type { BannerBlock as BannerBlockProps } from 'src/payload-types'
+import type { BannerBlock as BannerBlockProps } from '@/payload-types'
 
 import { cn } from '@/utilities/cn'
 import React from 'react'
-import RichText from 'src/app/components/RichText'
+import RichText from '@/app/components/RichText'
 
 type Props = {
   className?: string
@@ -848,11 +848,11 @@ export const BannerBlock: React.FC<Props> = ({ className, content, style }) => {
 
 // app\blocks\CallToAction\index.tsx
 import React from 'react'
-import RichText from 'src/app/components/RichText'
+import RichText from '@/app/components/RichText'
 
 import type { Page } from '../../../payload-types'
 
-import { CMSLink } from '../../components/Link'
+import { CMSLink } from '@/components/Link'
 
 type Props = Extract<Page['layout'][0], { blockType: 'cta' }>
 
@@ -937,11 +937,11 @@ export const CodeBlock: React.FC<Props> = ({ className, code, language }) => {
 // app\blocks\Content\index.tsx
 import { cn } from '@/utilities/cn'
 import React from 'react'
-import RichText from 'src/app/components/RichText'
+import RichText from '@/app/components/RichText'
 
 import type { Page } from '../../../payload-types'
 
-import { CMSLink } from '../../components/Link'
+import { CMSLink } from '@/components/Link'
 
 type Props = Extract<Page['layout'][0], { blockType: 'content' }>
 
@@ -1061,8 +1061,8 @@ import type { Form as FormType } from '@payloadcms/plugin-form-builder/types'
 import { useRouter } from 'next/navigation'
 import React, { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import RichText from 'src/app/components/RichText'
-import { Button } from 'src/app/components/ui/button'
+import RichText from '@/app/components/RichText'
+import { Button } from '@/app/components/ui/button'
 
 import { buildInitialFormState } from './buildInitialFormState'
 import { fields } from './fields'
@@ -2702,11 +2702,11 @@ import type { StaticImageData } from 'next/image'
 
 import { cn } from '@/utilities/cn'
 import React from 'react'
-import RichText from 'src/app/components/RichText'
+import RichText from '@/app/components/RichText'
 
 import type { Page } from '../../../payload-types'
 
-import { Media } from '../../components/Media'
+import { Media } from '@/components/Media'
 
 type Props = Extract<Page['layout'][0], { blockType: 'mediaBlock' }> & {
   breakout?: boolean
@@ -2771,11 +2771,11 @@ export const MediaBlock: React.FC<Props> = (props) => {
 // app\blocks\RelatedPosts\index.tsx
 import clsx from 'clsx'
 import React from 'react'
-import RichText from 'src/app/components/RichText'
+import RichText from '@/app/components/RichText'
 
 import type { Post } from '../../../payload-types'
 
-import { Card } from '../../components/Posts/Card'
+import { Card } from '@/components/Posts/Card'
 
 export type RelatedPostsProps = {
   className?: string
@@ -3638,7 +3638,7 @@ export const Pagination: React.FC<{
 
 // app\components\PayloadRedirects\index.tsx
 import type React from 'react'
-import type { Page, Post } from 'src/payload-types'
+import type { Page, Post } from '@/payload-types'
 
 import { getCachedDocument } from '@/utilities/getDocument'
 import { getCachedRedirects } from '@/utilities/getRedirects'
@@ -3992,9 +3992,9 @@ import { CallToActionBlock } from '@/blocks/CallToAction'
 import { CodeBlock, CodeBlockProps } from '@/blocks/Code'
 import { MediaBlock } from '@/blocks/MediaBlock'
 import React, { Fragment, JSX } from 'react'
-import { CMSLink } from 'src/app/components/Link'
+import { CMSLink } from '@/app/components/Link'
 import { DefaultNodeTypes, SerializedBlockNode } from '@payloadcms/richtext-lexical'
-import type { BannerBlock as BannerBlockProps } from 'src/payload-types'
+import type { BannerBlock as BannerBlockProps } from '@/payload-types'
 
 import {
   IS_BOLD,
@@ -4945,7 +4945,7 @@ import React from 'react'
 
 import type { BookJournalEntry } from '../../../payload-types' // Assuming updated type definition
 
-import { Media } from '../../components/Media'
+import { Media } from '@/components/Media'
 
 export const BookJournalEntryHero: React.FC<{
   bookJournalEntry: BookJournalEntry
@@ -5006,9 +5006,9 @@ import React, { useEffect } from 'react'
 
 import type { Page } from '../../../payload-types'
 
-import { CMSLink } from '../../components/Link'
-import { Media } from '../../components/Media'
-import RichText from '../../components/RichText'
+import { CMSLink } from '@/components/Link'
+import { Media } from '@/components/Media'
+import RichText from '@/components/RichText'
 
 export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText }) => {
   const { setHeaderTheme } = useHeaderTheme()
@@ -5054,7 +5054,7 @@ import React from 'react'
 
 import type { Page } from '../../../payload-types'
 
-import RichText from '../../components/RichText'
+import RichText from '@/components/RichText'
 
 type LowImpactHeroType =
   | {
@@ -5083,9 +5083,9 @@ import React from 'react'
 
 import type { Page } from '../../../payload-types'
 
-import { CMSLink } from '../../components/Link'
-import { Media } from '../../components/Media'
-import RichText from '../../components/RichText'
+import { CMSLink } from '@/components/Link'
+import { Media } from '@/components/Media'
+import RichText from '@/components/RichText'
 
 export const MediumImpactHero: React.FC<Page['hero']> = ({ links, media, richText }) => {
   return (
@@ -5133,7 +5133,7 @@ import React from 'react'
 
 import type { Post } from '../../../payload-types'
 
-import { Media } from '../../components/Media'
+import { Media } from '@/components/Media'
 
 export const PostHero: React.FC<{
   post: Post
@@ -5306,7 +5306,7 @@ import canUseDOM from '../../utilities/canUseDOM'
 
 export interface ContextType {
   headerTheme?: Theme | null
-  setHeaderTheme: (theme: Theme | null) => void  
+  setHeaderTheme: (theme: Theme | null) => void
 }
 
 const initialContext: ContextType = {
@@ -5631,7 +5631,7 @@ export const generateMeta = async (args: { doc: Page | Post }): Promise<Metadata
 
 
 // app\utilities\getDocument.ts
-import type { Config } from 'src/payload-types'
+import type { Config } from '@/payload-types'
 
 import configPromise from '@payload-config'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
@@ -5665,7 +5665,7 @@ export const getCachedDocument = (collection: Collection, slug: string) =>
 
 
 // app\utilities\getGlobals.ts
-import type { Config } from 'src/payload-types'
+import type { Config } from '@/payload-types'
 
 import configPromise from '@payload-config'
 import { getPayloadHMR } from '@payloadcms/next/utilities'

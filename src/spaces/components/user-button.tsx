@@ -34,7 +34,7 @@ export const UserButton = ({ user: initialUser, className }: UserButtonProps) =>
       };
       fetchUserWithProfile();
     }
-  }, [user.id]);
+  }, [user.id, user.profile]);
 
   if (!user) {
     return null;
@@ -59,7 +59,7 @@ export const UserButton = ({ user: initialUser, className }: UserButtonProps) =>
             <div className="flex items-center gap-x-2">
               <Avatar className={cn("h-8 w-8 md:h-8 md:w-8")}>
                 <AvatarImage
-                  src={imageUrl}
+                  src={imageUrl || undefined}
                   alt={user.profile?.name || 'User avatar'}
                 />
                 <AvatarFallback>

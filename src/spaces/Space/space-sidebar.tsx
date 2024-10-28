@@ -1,4 +1,4 @@
-// path: src/components/Spaces/space/space-sidebar.tsx
+// path: src/spaces/components/space/space-sidebar.tsx
 "use client";
 
 import * as React from 'react';

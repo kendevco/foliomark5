@@ -288,7 +288,7 @@ interface ModalData {
 └── route.ts # WebSocket handling
 ```
 
-The modals are now organized under src/components/Spaces/modals/ with the following structure:
+The modals are now organized under src/spaces/components/modals/ with the following structure:
 
 1. Space Management:
    create-space-modal.tsx

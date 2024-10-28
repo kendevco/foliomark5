@@ -1,4 +1,4 @@
-// path: src/components/Spaces/chat/chat-input.tsx
+// path: src/spaces/components/chat/chat-input.tsx
 "use client";
 
 import * as z from "zod";

@@ -60,7 +60,7 @@ import { Input } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'
 ```
 
-#### Feature Components (`src/components/spaces/`)
+#### Feature Components (`src/spaces/components/`)
 
 - **Rule**: One folder per feature
 - **Structure**:

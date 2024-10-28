@@ -1,4 +1,4 @@
-// path: src/components/Spaces/chat/chat-header.tsx
+// path: src/spaces/components/chat/chat-header.tsx
 
 "use client";
 
@@ -8,7 +8,7 @@ import { MobileToggle } from "@/spaces/components/mobile-toggle";
 import { UserAvatar } from "@/spaces/components/user-avatar";
 import { SocketIndicator } from "@/spaces/components/socket-indicator";
 
-import { ChatVideoButton } from "@/spaces/chat/chat-video-button";
+import { ChatVideoButton } from "@/spaces/components/chat/chat-video-button";
 
 interface ChatHeaderProps {
   spaceId: string;

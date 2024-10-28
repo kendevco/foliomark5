@@ -2,9 +2,9 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/spaces/utilities/payload/getCurrentUser";
 import { getPayloadClient } from "@/spaces/utilities/payload/getPayloadClient";
-import { ChatHeader } from "@/spaces/chat/chat-header";
-import { ChatMessages } from "@/spaces/chat/chat-messages";
-import { ChatInput } from "@/spaces/chat/chat-input";
+import { ChatHeader } from "@/spaces/components/chat/chat-header";
+import { ChatMessages } from "@/spaces/components/chat/chat-messages";
+import { ChatInput } from "@/spaces/components/chat/chat-input";
 import { MediaRoom } from "@/spaces/components/media-room";
 import { Metadata } from "next";
 

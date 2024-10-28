@@ -1,4 +1,4 @@
-// path: src/components/Spaces/Space/space-header.tsx
+// path: src/spaces/components/Space/space-header.tsx
 "use client";
 
 import { Space } from '@/payload-types';
