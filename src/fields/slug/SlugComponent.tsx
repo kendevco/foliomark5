@@ -8,7 +8,6 @@ import {
   TextInput,
   FieldLabel,
   useFormFields,
-  useForm,
 } from '@payloadcms/ui'
 
 import { formatSlug } from './formatSlug'
@@ -34,42 +33,33 @@ export const SlugComponent: React.FC<SlugComponentProps> = ({
 
   const { value, setValue } = useField<string>({ path })
 
-  const { dispatchFields } = useForm()
-
-  // The value of the checkbox
-  // We're using separate useFormFields to minimise re-renders
-  const checkboxValue = useFormFields(([fields]) => {
-    return fields[checkboxFieldPath]?.value as string
+  const { value: checkboxValue, setValue: setCheckboxValue } = useField<boolean>({
+    path: checkboxFieldPath,
   })
 
-  // The value of the field we're listening to for the slug
-  const targetFieldValue = useFormFields(([fields]) => {
+  const fieldToUseValue = useFormFields(([fields, dispatch]) => {
     return fields[fieldToUse]?.value as string
   })
 
   useEffect(() => {
     if (checkboxValue) {
-      if (targetFieldValue) {
-        const formattedSlug = formatSlug(targetFieldValue)
+      if (fieldToUseValue) {
+        const formattedSlug = formatSlug(fieldToUseValue)
 
         if (value !== formattedSlug) setValue(formattedSlug)
       } else {
         if (value !== '') setValue('')
       }
     }
-  }, [targetFieldValue, checkboxValue, setValue, value])
+  }, [fieldToUseValue, checkboxValue, setValue, value])
 
   const handleLock = useCallback(
     (e) => {
       e.preventDefault()
 
-      dispatchFields({
-        type: 'UPDATE',
-        path: checkboxFieldPath,
-        value: !checkboxValue,
-      })
+      setCheckboxValue(!checkboxValue)
     },
-    [checkboxValue, checkboxFieldPath, dispatchFields],
+    [checkboxValue, setCheckboxValue],
   )
 
   const readOnly = readOnlyFromProps || checkboxValue
@@ -84,7 +74,7 @@ export const SlugComponent: React.FC<SlugComponentProps> = ({
         </Button>
       </div>
 
-      <TextInput value={value} onChange={setValue} path={path} readOnly={Boolean(readOnly)} />
+      <TextInput label={''} value={value} onChange={setValue} path={path} readOnly={readOnly} />
     </div>
   )
 }

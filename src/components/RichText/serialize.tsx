@@ -4,10 +4,8 @@ import { CodeBlock, CodeBlockProps } from '@/blocks/Code/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import React, { Fragment, JSX } from 'react'
 import { CMSLink } from '@/components/Link'
-import { DefaultNodeTypes, SerializedBlockNode, SerializedLinkNode } from '@payloadcms/richtext-lexical'
+import { DefaultNodeTypes, SerializedBlockNode } from '@payloadcms/richtext-lexical'
 import type { BannerBlock as BannerBlockProps } from '@/payload-types'
-import type { Page } from '@/payload-types'
-import { buttonVariants } from '@/components/ui/button'
 
 import {
   IS_BOLD,
@@ -18,9 +16,7 @@ import {
   IS_SUPERSCRIPT,
   IS_UNDERLINE,
 } from './nodeFormat'
-
-// Define the valid appearance types
-type ValidAppearance = 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link' | null;
+import type { Page } from '@/payload-types'
 
 export type NodeTypes =
   | DefaultNodeTypes
@@ -190,30 +186,19 @@ export function serializeLexical({ nodes }: Props): JSX.Element {
               )
             }
             case 'link': {
-              const linkNode = node as SerializedLinkNode;
-              const fields = linkNode.fields || {};
-              const children = serializedChildren;
+              const fields = node.fields
 
-              // Transform link fields to match CMSLink props
-              const linkProps = {
-                key: index,
-                newTab: Boolean(fields.newTab),
-                url: fields.url || '',
-                appearance: 'default',
-                children,
-                ...(fields.linkType === 'internal' && fields.doc ? {
-                  href: typeof fields.doc.value === 'object' && 'slug' in fields.doc.value
-                    ? `/posts/${fields.doc.value.slug}`
-                    : '',
-                } : {})
-              };
-
-              // Ensure appearance is a valid type
-              const validAppearance = ['link', 'default', 'destructive', 'outline', 'secondary', 'ghost'].includes(linkProps.appearance)
-                ? linkProps.appearance as ValidAppearance
-                : 'default';
-
-              return <CMSLink {...linkProps} appearance={validAppearance} />;
+              return (
+                <CMSLink
+                  key={index}
+                  newTab={Boolean(fields?.newTab)}
+                  reference={fields.doc as any}
+                  type={fields.linkType === 'internal' ? 'reference' : 'custom'}
+                  url={fields.url}
+                >
+                  {serializedChildren}
+                </CMSLink>
+              )
             }
 
             default:

@@ -23,7 +23,6 @@ const collections: CollectionSlug[] = [
   'posts',
   'forms',
   'form-submissions',
-  'search',
 ]
 const globals: GlobalSlug[] = ['header', 'footer']
 
@@ -66,6 +65,7 @@ export const seed = async ({
   }
 
   for (const collection of collections) {
+    console.log('delete', collection)
     await payload.delete({
       collection: collection,
       where: {

@@ -1,6 +1,6 @@
-import type { BannerBlock as BannerBlockProps } from '@/payload-types'
+import type { BannerBlock as BannerBlockProps } from 'src/payload-types'
 
-import { cn } from '@/utilities/cn'
+import { cn } from 'src/utilities/cn'
 import React from 'react'
 import RichText from '@/components/RichText'
 

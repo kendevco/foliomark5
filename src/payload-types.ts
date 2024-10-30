@@ -11,23 +11,14 @@ export interface Config {
     users: UserAuthOperations;
   };
   collections: {
-    categories: Category;
     pages: Page;
     posts: Post;
     media: Media;
-    'spaces-media': SpacesMedia;
+    categories: Category;
     users: User;
-    profiles: Profile;
-    spaces: Space;
-    members: Member;
-    channels: Channel;
-    messages: Message;
-    conversations: Conversation;
-    directMessages: DirectMessage;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
-    search: Search;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -38,7 +29,6 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
-    settings: Setting;
   };
   locale: null;
   user: User & {
@@ -62,25 +52,6 @@ export interface UserAuthOperations {
     email: string;
     password: string;
   };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "categories".
- */
-export interface Category {
-  id: string;
-  title: string;
-  parent?: (string | null) | Category;
-  breadcrumbs?:
-    | {
-        doc?: (string | null) | Category;
-        url?: string | null;
-        label?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -127,8 +98,8 @@ export interface Page {
   layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
   meta?: {
     title?: string | null;
-    description?: string | null;
     image?: (string | null) | Media;
+    description?: string | null;
   };
   publishedAt?: string | null;
   slug?: string | null;
@@ -202,7 +173,7 @@ export interface CallToActionBlock {
           } | null;
           url?: string | null;
           label: string;
-          appearance?: ('default' | 'outline' | 'secondary') | null;
+          appearance?: ('default' | 'outline') | null;
         };
         id?: string | null;
       }[]
@@ -300,6 +271,25 @@ export interface ArchiveBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: string;
+  title: string;
+  parent?: (string | null) | Category;
+  breadcrumbs?:
+    | {
+        doc?: (string | null) | Category;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "posts".
  */
 export interface Post {
@@ -324,8 +314,8 @@ export interface Post {
   categories?: (string | Category)[] | null;
   meta?: {
     title?: string | null;
-    description?: string | null;
     image?: (string | null) | Media;
+    description?: string | null;
   };
   publishedAt?: string | null;
   authors?: (string | User)[] | null;
@@ -551,198 +541,6 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "spaces-media".
- */
-export interface SpacesMedia {
-  id: string;
-  alt: string;
-  caption?: string | null;
-  category: 'space' | 'profile' | 'message' | 'channel';
-  fileType: 'image' | 'video' | 'document' | 'audio' | 'other';
-  fileSize?: number | null;
-  duration?: number | null;
-  videoThumbnail?: (string | null) | Media;
-  uploadedBy: string | User;
-  createdBy: string | User;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-  sizes?: {
-    thumbnail?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    profile?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    space?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-  };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "profiles".
- */
-export interface Profile {
-  id: string;
-  userId: string;
-  name: string;
-  imageUrl?: string | null;
-  email: string;
-  spaces?: (string | Space)[] | null;
-  memberOf?: (string | Member)[] | null;
-  accessibleChannels?: (string | Channel)[] | null;
-  createdAt: string;
-  updatedAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "spaces".
- */
-export interface Space {
-  id: string;
-  name: string;
-  description?: string | null;
-  icon?: (string | null) | Media;
-  owner: string | User;
-  channels?: (string | Channel)[] | null;
-  members?: (string | Member)[] | null;
-  createdBy: string | User;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "channels".
- */
-export interface Channel {
-  id: string;
-  name: string;
-  description?: string | null;
-  space: string | Space;
-  type?: ('text' | 'audio' | 'video') | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "members".
- */
-export interface Member {
-  id: string;
-  user: string | User;
-  space: string | Space;
-  role?: ('admin' | 'moderator' | 'member' | 'guest') | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "messages".
- */
-export interface Message {
-  id: string;
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  author: string | User;
-  channel: string | Channel;
-  attachments?:
-    | {
-        file?: (string | null) | Media;
-        id?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "conversations".
- */
-export interface Conversation {
-  id: string;
-  participants: (string | User)[];
-  lastMessage?: (string | null) | DirectMessage;
-  createdAt: string;
-  updatedAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "directMessages".
- */
-export interface DirectMessage {
-  id: string;
-  content: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  };
-  sender: string | User;
-  conversation: string | Conversation;
-  attachments?:
-    | {
-        file?: (string | null) | Media;
-        id?: string | null;
-      }[]
-    | null;
-  read?:
-    | {
-        user?: (string | null) | User;
-        readAt?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  createdAt: string;
-  updatedAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -783,43 +581,11 @@ export interface FormSubmission {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "search".
- */
-export interface Search {
-  id: string;
-  title?: string | null;
-  priority?: number | null;
-  doc: {
-    relationTo: 'posts';
-    value: string | Post;
-  };
-  slug?: string | null;
-  meta?: {
-    title?: string | null;
-    description?: string | null;
-    image?: (string | null) | Media;
-  };
-  categories?:
-    | {
-        relationTo?: string | null;
-        id?: string | null;
-        title?: string | null;
-      }[]
-    | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
   id: string;
   document?:
-    | ({
-        relationTo: 'categories';
-        value: string | Category;
-      } | null)
     | ({
         relationTo: 'pages';
         value: string | Page;
@@ -833,40 +599,12 @@ export interface PayloadLockedDocument {
         value: string | Media;
       } | null)
     | ({
-        relationTo: 'spaces-media';
-        value: string | SpacesMedia;
+        relationTo: 'categories';
+        value: string | Category;
       } | null)
     | ({
         relationTo: 'users';
         value: string | User;
-      } | null)
-    | ({
-        relationTo: 'profiles';
-        value: string | Profile;
-      } | null)
-    | ({
-        relationTo: 'spaces';
-        value: string | Space;
-      } | null)
-    | ({
-        relationTo: 'members';
-        value: string | Member;
-      } | null)
-    | ({
-        relationTo: 'channels';
-        value: string | Channel;
-      } | null)
-    | ({
-        relationTo: 'messages';
-        value: string | Message;
-      } | null)
-    | ({
-        relationTo: 'conversations';
-        value: string | Conversation;
-      } | null)
-    | ({
-        relationTo: 'directMessages';
-        value: string | DirectMessage;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -879,10 +617,6 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'form-submissions';
         value: string | FormSubmission;
-      } | null)
-    | ({
-        relationTo: 'search';
-        value: string | Search;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -934,8 +668,16 @@ export interface Header {
   id: string;
   navItems?:
     | {
-        label: string;
-        link: string;
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?: {
+            relationTo: 'pages';
+            value: string | Page;
+          } | null;
+          url?: string | null;
+          label: string;
+        };
         id?: string | null;
       }[]
     | null;
@@ -948,79 +690,21 @@ export interface Header {
  */
 export interface Footer {
   id: string;
-  copyright: string;
   navItems?:
     | {
-        label: string;
-        link: string;
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?: {
+            relationTo: 'pages';
+            value: string | Page;
+          } | null;
+          url?: string | null;
+          label: string;
+        };
         id?: string | null;
       }[]
     | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "settings".
- */
-export interface Setting {
-  id: string;
-  site: {
-    title: string;
-    description?: string | null;
-    maintenance?: {
-      enabled?: boolean | null;
-      message?: {
-        root: {
-          type: string;
-          children: {
-            type: string;
-            version: number;
-            [k: string]: unknown;
-          }[];
-          direction: ('ltr' | 'rtl') | null;
-          format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-          indent: number;
-          version: number;
-        };
-        [k: string]: unknown;
-      } | null;
-    };
-  };
-  apiKeys?: {
-    liveKit?: {
-      apiKey?: string | null;
-      apiSecret?: string | null;
-      url?: string | null;
-    };
-    aiServices?: {
-      deepgramApiKey?: string | null;
-      neetsApiKey?: string | null;
-      groqApiKey?: string | null;
-      openAiApiKey?: string | null;
-      anthropicApiKey?: string | null;
-      elevenLabsApiKey?: string | null;
-    };
-    security?: {
-      googleRecaptchaSecret?: string | null;
-    };
-  };
-  aiSettings?: {
-    customEndpoints?:
-      | {
-          name: string;
-          endpoint: string;
-          apiKeyField?: string | null;
-          isActive?: boolean | null;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  workspaceSettings?: {
-    homeWorkspace?: (string | null) | Space;
-    allowMultipleWorkspaces?: boolean | null;
-    maxWorkspacesPerUser?: number | null;
-  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }

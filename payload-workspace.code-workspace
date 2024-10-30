@@ -1,0 +1,25 @@
+{
+  "folders": [
+    {
+      "name": "FMark5",
+      "path": "."
+    },
+    {
+      "name": "Payload AI Plugin",
+      "path": "../payload-ai"
+    }
+  ],
+  "settings": {
+    "typescript.tsdk": "FMark5/node_modules/typescript/lib",
+    "typescript.enablePromptUseWorkspaceTsdk": true,
+    "files.exclude": {
+      "**/.git": true,
+      "**/.DS_Store": true,
+      "**/node_modules": true
+    }
+  },
+  "launch": {
+    "configurations": [],
+    "compounds": []
+  }
+}

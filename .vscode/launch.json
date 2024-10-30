@@ -8,21 +8,31 @@
       "name": "Next.js: Server",
       "type": "node",
       "request": "launch",
-      "args": ["${workspaceFolder}/node_modules/next/dist/bin/next", "dev"],
-      "runtimeArgs": ["--inspect"],
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["dev"],
       "env": {
-        "NODE_OPTIONS": "--inspect"
+        "NODE_OPTIONS": "--inspect --no-deprecation"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
-      "sourceMaps": true
+      "sourceMaps": true,
+      "skipFiles": [
+        "<node_internals>/**",
+        "${workspaceFolder}/node_modules/**"
+      ],
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "../payload-ai/src/**",
+        "../payload-ai/dist/**",
+        "!**/node_modules/**"
+      ]
     },
     {
+      "name": "Next.js: Chrome",
       "type": "chrome",
       "request": "launch",
-      "name": "Next.js: Chrome",
       "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}/",
+      "webRoot": "${workspaceFolder}",
       "runtimeExecutable": "C:/Program Files/Google/Chrome/Application/chrome.exe",
       "runtimeArgs": [
         "--remote-debugging-port=9222",
@@ -30,17 +40,47 @@
       ]
     },
     {
-      "name": "Python: Current File",
-      "type": "python",
+      "name": "Plugin: Watch",
+      "type": "node",
       "request": "launch",
-      "program": "${file}",
-      "console": "integratedTerminal"
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["dev:plugin"],
+      "cwd": "${workspaceFolder}/src/plugins/payload-ai",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "../payload-ai/**",
+        "!**/node_modules/**"
+      ]
     },
     {
-      "command": "yarn dev",
-      "name": "Debug Website",
+      "name": "Debug All",
+      "type": "node",
       "request": "launch",
-      "type": "node-terminal"
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["dev:all"],
+      "env": {
+        "NODE_OPTIONS": "--inspect --no-deprecation"
+      },
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "sourceMaps": true,
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "../payload-ai/**",
+        "!**/node_modules/**"
+      ]
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Next.js + Chrome",
+      "configurations": ["Next.js: Server", "Next.js: Chrome"]
+    },
+    {
+      "name": "Full Stack",
+      "configurations": ["Debug All", "Next.js: Chrome"]
     }
   ]
 }

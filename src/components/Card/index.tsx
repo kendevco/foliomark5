@@ -33,7 +33,7 @@ export const Card: React.FC<{
         'border border-border rounded-lg overflow-hidden bg-card hover:cursor-pointer',
         className,
       )}
-      ref={card.ref as React.RefObject<HTMLElement>}
+      ref={card.ref}
     >
       <div className="relative w-full ">
         {!metaImage && <div className="">No image</div>}
@@ -69,11 +69,7 @@ export const Card: React.FC<{
         {titleToUse && (
           <div className="prose">
             <h3>
-              <Link
-                className="not-prose"
-                href={href}
-                ref={link.ref as React.LegacyRef<HTMLAnchorElement>}
-              >
+              <Link className="not-prose" href={href} ref={link.ref}>
                 {titleToUse}
               </Link>
             </h3>

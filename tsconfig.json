@@ -16,7 +16,6 @@
     "noEmit": true,
     "incremental": true,
     "jsx": "preserve",
-    "jsxImportSource": "react",
     "module": "esnext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
@@ -36,9 +35,8 @@
       ],
       "@/*": [
         "./src/*"
-      ]
-    },
-    "tsBuildInfoFile": "./tsbuildinfo"
+      ],
+    }
   },
   "include": [
     "**/*.ts",

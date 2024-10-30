@@ -1,967 +1,223 @@
-# FolioMark5: Ken's Portfolio v5 and Project Showcase
+# Payload Website Template
 
-<p align="center">
-  <img alt="FolioMark5" src="assets/foliomark5-intro.gif" width="100%" />
-</p>
+This is the official [Payload Website Template](https://github.com/payloadcms/payload/blob/main/templates/website). Use it to power websites, blogs, or portfolios from small to enterprise. This repo includes a fully-working backend, enterprise-grade admin panel, and a beautifully designed, production-ready website.
 
-## 🌟 Supercharge Your Projects with FolioMark5
+This template is right for you if you are working on:
 
-FolioMark5 is a multifaceted platform that serves as my hobby site, portfolio, and a testbed for various web development experiments. Built with Payload CMS v3, it showcases the capabilities of modern content management systems while providing a space for personal expression and project documentation.
+- A personal or enterprise-grade website, blog, or portfolio
+- A content publishing platform with a fully featured publication workflow
+- A lead generation website with premium content gated behind authentication
 
-> **⚠️ Important:** This project is in active development. Features are being added and refined regularly. Stay tuned for updates!
+Core features:
 
----
+- [Pre-configured Payload Config](#how-it-works)
+- [Authentication](#users-authentication)
+- [Access Control](#access-control)
+- [Layout Builder](#layout-builder)
+- [Draft Preview](#draft-preview)
+- [Live Preview](#live-preview)
+- [Redirects](#redirects)
+- [SEO](#seo)
+- [Website](#website)
 
-### 🎥 [Explore the FolioMark5 Demo](https://foliomark5.kendev.co/demo)
+## Quick Start
 
----
+To spin up this example locally, follow these steps:
 
-## ✨ Key Features
+### Clone
 
-### Portfolio and Blog
+If you have not done so already, you need to have standalone copy of this repo on your machine. If you've already cloned this repo, skip to [Development](#development).
 
-- 📝 **Portfolio Showcase**
-  - Highlighting development projects and skills.
-- 📰 **Blog**
-  - Sharing thoughts, experiences, and technical insights.
+#### Method 1 (recommended)
 
-### Spaces Messaging System
+Go to Payload Cloud and [clone this template](https://payloadcms.com/new/clone/website). This will create a new repository on your GitHub account with this template's code which you can then clone to your own machine.
 
-- 💬 **Multi-Space, Multi-User, Multi-Channel Messaging**
-  - Real-time text, audio, and video chat using LiveKit.
-- 🤖 **AI-Powered Features**
-  - Automated responses from AI using OpenAI and ElevenLabs integration.
+#### Method 2
 
-### Affiliate Links
+Use the `create-payload-app` CLI to clone this template directly to your machine:
 
-- 🔗 **Curated Recommendations**
-  - Links to products and services I endorse.
+    npx create-payload-app@beta my-project -t website
 
----
+#### Method 3
 
-## 📚 Table of Contents
+Use the `git` CLI to clone this template directly to your machine:
 
-- [Technical Stack](#-technical-stack)
-- [Schema Design](#-schema-design)
-- [Getting Started](#-getting-started)
-- [Environment Setup](#-environment-setup)
-- [Development Workflow](#-development-workflow)
-- [AI Integration](#-ai-integration)
-- [Custom Blocks](#-custom-blocks)
-- [Contributing](#-contributing)
-- [Open Source Contribution](#-open-source-contribution)
-- [Acknowledgements](#-acknowledgements)
-- [Contact](#-contact)
-- [License](#-license)
+    git clone -n --depth=1 --filter=tree:0 https://github.com/payloadcms/payload my-project && cd my-project && git sparse-checkout set --no-cone templates/website && git checkout && rm -rf .git && git init && git add . && git mv -f templates/website/{.,}* . && git add . && git commit -m "Initial commit"
 
----
+### Development
 
-## 🔧 Technical Stack
+1. First [clone the repo](#clone) if you have not done so already
+1. `cd my-project && cp .env.example .env` to copy the example environment variables
+1. `pnpm install && pnpm dev` to install dependencies and start the dev server
+1. open `http://localhost:3000` to open the app in your browser
 
-- **CMS**: [Payload CMS](https://payloadcms.com/) (Beta Release 0.67)
-- **Frontend**: [Next.js](https://nextjs.org/)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-- **Database**: [MongoDB](https://www.mongodb.com/)
-- **Real-time Communication**: [Socket.IO](https://socket.io/) & [LiveKit](https://livekit.io/)
-- **AI Integration**: [OpenAI](https://openai.com/), [ElevenLabs](https://elevenlabs.io/)
-- **Deployment**: [Vercel](https://vercel.com/)
+That's it! Changes made in `./src` will be reflected in your app. Follow the on-screen instructions to login and create your first admin user. Then check out [Production](#production) once you're ready to build and serve your app, and [Deployment](#deployment) when you're ready to go live.
 
----
+## How it works
 
-## 🗂 Schema Design
+The Payload config is tailored specifically to the needs of most websites. It is pre-configured in the following ways:
 
-### Core Collections
+### Collections
 
-#### Spaces Collection
+See the [Collections](https://payloadcms.com/docs/beta/configuration/collections) docs for details on how to extend this functionality.
 
-- **name**: `string` (required)
-- **imageUrl**: `string` (optional)
-- **inviteCode**: `string` (unique)
-- **members**: `relationship[]` to Members collection
-- **channels**: `relationship[]` to Channels collection
-- **profiles**: `relationship[]` to Profiles collection
+- #### Users (Authentication)
 
-#### Members Collection
+  Users are auth-enabled collections that have access to the admin panel and unpublished content. See [Access Control](#access-control) for more details.
 
-- **user**: `relationship` to Users collection
-- **space**: `relationship` to Spaces collection
-- **profile**: `relationship` to Profiles collection
-- **role**: `enum` ['admin', 'moderator', 'member', 'guest']
-- **createdAt**: `date`
-- **updatedAt**: `date`
+  For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/beta/examples/auth) or the [Authentication](https://payloadcms.com/docs/beta/authentication/overview#authentication-overview) docs.
 
-#### Profiles Collection
-
-- **user**: `relationship` to Users collection
-- **name**: `string`
-- **imageUrl**: `string` (optional)
-- **email**: `string`
-- **spaces**: `relationship[]` to Spaces collection
+- #### Posts
 
-#### Channels Collection
-
-- **name**: `string`
-- **type**: `enum` ['TEXT', 'AUDIO', 'VIDEO']
-- **space**: `relationship` to Spaces collection
-- **messages**: `relationship[]` to Messages collection
-
-#### Messages Collection
-
-- **content**: `string`
-- **fileUrl**: `string` (optional)
-- **channel**: `relationship` to Channels collection
-- **member**: `relationship` to Members collection
-- **deleted**: `boolean`
-- **isUpdated**: `boolean`
-- **createdAt**: `date`
-- **updatedAt**: `date`
-
-#### DirectMessages Collection
-
-- **content**: `string`
-- **fileUrl**: `string` (optional)
-- **conversation**: `relationship` to Conversations collection
-- **sender**: `relationship` to Users collection
-- **deleted**: `boolean`
-- **isUpdated**: `boolean`
-- **createdAt**: `date`
-- **updatedAt**: `date`
-
-#### Conversations Collection
-
-- **participants**: `relationship[]` to Members collection
-- **directMessages**: `relationship[]` to DirectMessages collection
-- **createdAt**: `date`
-- **updatedAt**: `date`
-
-#### Media Collection (`spaces-media`)
-
-- **alt**: `string`
-- **caption**: `string`
-- **category**: `enum` ['space', 'profile', 'message', 'channel']
-- **fileType**: `enum` ['image', 'video', 'document', 'audio', 'other']
-- **mimeType**: `string`
-- **fileSize**: `number`
-- **uploadedBy**: `relationship` to Users collection
-- **createdBy**: `relationship` to Users collection
-- **duration**: `number` (for video/audio)
-- **videoThumbnail**: `relationship` to Media (optional)
-
----
-
-## 🔍 Types and Member Roles
-
-### Core Types
-
-```typescript
-// Member Role Definition
-export enum MemberRole {
-  GUEST = 'guest',
-  MODERATOR = 'moderator',
-  MEMBER = 'member',
-  ADMIN = 'admin',
-}
-
-// Space Member Types
-interface MemberWithProfile {
-  id: string
-  role: MemberRole
-  profile: Profile
-  user: User
-  space: Space
-  updatedAt: string
-  createdAt: string
-}
-
-interface SpaceWithMembers extends Space {
-  members: MemberWithProfile[]
-}
-
-// Modal Data Types
-interface ModalData {
-  space?: SpaceWithMembers
-  channel?: Channel
-  spaceId?: string
-}
-```
-
-### Media Upload System
-
-- Centralized upload handling via `uploadFile` server action
-- Support for all file types with specific handling for images
-- Category-based organization (SPACE, PROFILE, MESSAGE, CHANNEL)
-- Proper error handling and type safety
-
-### Authentication
-
-- Token-based auth using Payload CMS
-- Cookie handling for persistent sessions
-- Proper header management in API routes
-
-### File Structure
-
-```bash
-
-@spaces/
-├── access/ # Access control and permissions
-│   ├── isAdmin.ts
-│   ├── isCreator.ts
-│   └── isAdminInHomeSpace.ts
-│
-├── actions/ # Server actions
-│   ├── members.ts
-│   └── messages.ts
-│
-├── ai/ # AI integration components
-│   └── audio-input.tsx
-│
-├── chat/ # Chat functionality
-│   ├── chat-header.tsx
-│   ├── chat-input.tsx
-│   ├── chat-item.tsx
-│   ├── chat-messages.tsx
-│   ├── chat-video-button.tsx
-│   └── chat-welcome.tsx
-│
-├── collections/ # Data models
-│   ├── index.ts
-│   ├── types.ts
-│   ├── Channels.ts
-│   ├── Conversations.ts
-│   ├── DirectMessages.ts
-│   ├── Media.ts
-│   ├── Members.ts
-│   ├── Messages.ts
-│   ├── Profiles.ts
-│   └── Spaces.ts
-│
-├── components/ # Shared UI components
-│   ├── action-tooltip.tsx
-│   ├── emoji-picker.tsx
-│   ├── mobile-toggle.tsx
-│   ├── navigation/
-│   ├── socket-indicator.tsx
-│   └── user-avatar.tsx
-│
-├── hooks/ # Custom React hooks
-│   ├── use-chat-query.ts
-│   ├── use-chat-scroll.ts
-│   ├── use-chat-socket.ts
-│   ├── use-modal-store.ts
-│   └── use-infinite-scroll.ts
-│
-├── providers/ # Context providers
-│   ├── modal-provider.tsx
-│   └── socket-provider.tsx
-│
-├── services/ # Business logic
-│   ├── memberService.ts
-│   ├── messageService.ts
-│   └── spaceService.ts
-│
-└── utilities/ # Helper functions
-    ├── payload/
-    │   ├── getPayloadClient.ts
-    │   └── exportData.ts
-    ├── getCurrentUser.ts
-    └── getUserWithProfile.ts
-
-
-└── api/ # API routes
-├── spaces/
-│ ├── [spaceId]/
-│ │ ├── route.ts # Space operations
-│ │ ├── members/
-│ │ │ └── me/
-│ │ │ └── route.ts # Current member
-│ │ └── messages/
-│ │ └── route.ts # Space messages
-│ └── route.ts # Spaces list
-│
-├── upload/
-│ ├── route.ts # Upload endpoint
-│ └── core.ts # Upload config
-│
-└── socket/
-└── spaces/
-└── [spaceId]/
-└── route.ts # WebSocket handling
-```
-
-The modals are now organized under src/spaces/components/modals/ with the following structure:
-
-1. Space Management:
-   create-space-modal.tsx
-   edit-space-modal.tsx
-   delete-space-modal.tsx
-   leave-space-modal.tsx
-   invite-modal.tsx
-   members-modal.tsx
-   Channel Management:
-   create-channel-modal.tsx
-   edit-channel-modal.tsx
-   delete-channel-modal.tsx
-   Message Management:
-   message-file-modal.tsx
-   delete-message-modal.tsx
-2. Initial Setup:
-   initial-modal.tsx
-   Each modal uses the shared useModal hook and follows a consistent pattern with:
-   Dialog component for the modal UI
-   Form handling with react-hook-form where needed
-   Proper error handling and loading states
-   Analytics tracking for important actions
-   Consistent styling and layout
-   This organization makes it easier to:
-3. Maintain related components together
-   Share common modal functionality
-   Keep space-specific UI components properly scoped
-   Track and manage modal-related features
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-Ensure you have the following installed:
-
-- **Node.js** (version 14 or higher)
-- (On Windows - If you don't already try NVM for Windows gh link: https://github.com/coreybutler/nvm-windows)
-- **npm**, **yarn**, or **pnpm**
-- **MongoDB** (running instance)
-
-### Installation
-
-Clone repo, use PNPM if you can good luck if you can't for dependencies. Google it.
-
-## ⚙️ Environment Setup
-
-Copy the following into your `.env` file and replace the placeholder values with your actual configuration:
-
-```env
-# Run on a specific port
-PORT=3000
-
-# Database connection string
-DATABASE_URI=your_mongodb_connection_string_here
-
-# Used to encrypt JWT tokens
-PAYLOAD_SECRET=your_secret_key_here
-
-# Used to format links and URLs
-PAYLOAD_PUBLIC_SERVER_URL=http://localhost:3000
-NEXT_PUBLIC_SERVER_URL=http://localhost:3000
-
-# Allow robots to index the site (optional)
-
-# LiveKit Configuration
-LIVEKIT_API_KEY=your_livekit_api_key_here
-# **Please obtain a valid LIVEKIT_API_KEY from the official LIVEKIT API documentation: https://docs.livekit.io/api/keys**
-NEXT_PUBLIC_LIVEKIT_URL=your_livekit_websocket_url_here
-
-# Deepgram API
-DEEPGRAM_API_KEY=your_deepgram_api_key_here
-# **Please obtain a valid DEEPGRAM_API_KEY from the official Deepgram API documentation: https://deepgram.com/api keys**
-NEETS_API_KEY=your_neets_api_key_here
-
-# Groq API
-GROQ_API_KEY=your_groq_api_key_here
-# **Please obtain a valid GROQ_API_KEY from the official Groq API documentation: https://groq.app/docs/api-keys**
-GROQ_BASE_URL=https://api.groq.com/openai/v1
-
-# OpenAI API
-OPENAI_API_KEY=your_openai_api_key_here
-# **Please obtain a valid OPENAI_API_KEY from the official OpenAI API documentation: https://api.openai.com/docs/api-keys**
-
-# Anthropic API
-ANTHROPIC_API_KEY=your_anthropic_api_key_here
-# **Please obtain a valid ANTHROPIC_API_KEY from the official Anthropic API documentation: https://anthropic.com/api-keys**
-
-# ELEVENLABS API
-ELEVENLABS_API_KEY=your_elevenlabs_api_key_here
-
-# Google Recaptcha Secret
-GOOGLE_RECAPTCHA_SECRET=your_google_recaptcha_secret_here
-# **Please obtain a valid GOOGLE_RECAPTCHA_SECRET from the official Google ReCaptcha documentation: https://developers.google.com/recaptcha/docs/verify**
-
-# System User Email
-SYSTEM_USER_EMAIL=your_system_email_here
-
-# GitHub OAuth
-GITHUB_ID=your_github_client_id_here
-GITHUB_SECRET=your_github_client_secret_here
-# **Please obtain a valid GITHUB_ID and GITHUB_SECRET from the official GitHub OAuth documentation: https://docs.github.com/en/developers/tokens**
-
-# Vercel Blob Storage Token
-BLOB_READ_WRITE_TOKEN=your_vercel_blob_token_here
-
-PAYLOAD_CONFIG_PATH=payload.config.ts
-NEXT_TELEMETRY_DISABLED=1
-
-```
-
-### Notes
-
-- **PAYLOAD_SECRET**: A secret key for Payload CMS authentication.
-- **MONGODB_URL**: Connection string for your MongoDB database.
-- **NEXT_PUBLIC_SERVER_URL**: The public URL where your app is running.
-- **UPLOADTHING**: Credentials for media uploads via UploadThing.
-- **LIVEKIT**: API keys for real-time audio/video communication via [LiveKit](https://livekit.io/).
-- **AI Integration**: API keys for AI services from [OpenAI](https://openai.com/) and [ElevenLabs](https://elevenlabs.io/).
-
----
-
-## 🛠 Development Workflow
-
-### Type Safety Checklist
-
-- [ ] Collection types generated
-- [ ] API response types defined
-- [ ] Component props typed
-- [ ] Utility functions typed
-
-### Build Process
-
-1. **Install Dependencies**
-
-   ```bash
-   pnpm install
-   ```
-
-2. **Build the Application**
-
-   ```bash
-   pnpm build
-   ```
-
-3. **Start Development Server**
-
-   ```bash
-   pnpm dev
-   ```
-
-### Testing Checklist
-
-- [ ] Authentication flow
-- [ ] File uploads
-- [ ] Space creation and management
-- [ ] Channel operations
-- [ ] Real-time features
-- [ ] AI-powered messaging
-- [ ] Media handling
-- [ ] Error states
-
----
-
-## 🤖 AI Integration
-
-FolioMark5 integrates advanced AI capabilities to enhance content creation and user interaction.
-
-### Supported Fields and Features
-
-#### Text and RichText Fields
-
-- 📝 **Text Generation**
-  - **Compose** content effortlessly.
-  - **Proofread** for grammar and style improvements.
-  - **Translate** content into multiple languages.
-  - **Rephrase** for maximum impact.
-
-#### Upload Fields
-
-- 🎙️ **Voice Generation** powered by ElevenLabs and OpenAI.
-- 🖼️ **Image Generation** powered by OpenAI (coming soon).
-
-### Other Features
-
-- 🎛️ **Field-Level Prompt Customization**
-- 🧠 **Automated Content Workflows** (coming soon)
-- 🌍 **Internationalization Support** (coming soon)
-- 💬 **AI Chat Support** (coming soon)
-
-### Configuration
-
-To enable AI features, you need to provide API keys for OpenAI and ElevenLabs.
-
-1. **Install the AI Plugin**
-
-   Add the AI plugin to your Payload project:
-
-   ```bash
-   pnpm add @ai-stack/payloadcms
-   ```
-
-2. **Update Payload Configuration**
-
-   ```javascript
-   // payload.config.ts
-   import { buildConfig } from 'payload/config'
-   import { payloadAiPlugin } from '@ai-stack/payloadcms'
-
-   export default buildConfig({
-     plugins: [
-       payloadAiPlugin({
-         collections: {
-           [YourCollection.slug]: true,
-         },
-         debugging: false,
-       }),
-     ],
-     // ... your existing Payload configuration
-   })
-   ```
-
-3. **Configure Environment Variables**
-
-   Add your AI service API keys to the `.env` file:
-
-   ```env
-   OPENAI_API_KEY=your-openai-api-key
-   ELEVENLABS_API_KEY=your-elevenlabs-api-key
-   ```
-
-4. **Enabling AI for Custom Components**
-
-   If AI-enabled fields don't display Compose settings, manually add the component path:
-
-   ```javascript
-   // In your field configuration
-   import { PayloadAiPluginLexicalEditorFeature } from '@ai-stack/payloadcms'
-
-   fields: [
-     {
-       name: 'content',
-       type: 'richText',
-       editor: lexicalEditor({
-         features: ({ rootFeatures }) => {
-           return [
-             // ... your existing features
-             PayloadAiPluginLexicalEditorFeature(),
-           ]
-         },
-       }),
-     },
-   ]
-   ```
-
-> **Note:** For more detailed configuration, refer to the [Payload AI Plugin Documentation](https://github.com/ashbuilds/payloadcms-ai-plugin).
-
----
-
-## 🎯 Core Dependencies
-
-### Primary Framework
-
-- **Payload CMS** (v3.0.0-beta.119)
-  - Status: ✅ Production Ready
-  - Key Features Used:
-    - Local API
-    - Collections API
-    - Authentication
-    - Media Management
-
-### Frontend
-
-- **Next.js** (v14)
-  - App Router
-  - Server Components
-  - API Routes
-
-### Database
-
-- **MongoDB** (Required)
-  - Collections
-  - Relationships
-  - Indexes
-
-### Real-time Features
-
-- **LiveKit**
-  - Audio/Video Chat
-  - Required Environment Variables:
-    ```env
-    LIVEKIT_API_KEY=
-    NEXT_PUBLIC_LIVEKIT_URL=
-    ```
-
-### AI Integration
-
-- **OpenAI** (Optional)
-  - Chat Completion
-  - Required if using AI features:
-    ```env
-    OPENAI_API_KEY=
-    ```
-- **ElevenLabs** (Optional)
-  - Voice Generation
-  - Required if using voice features:
-    ```env
-    ELEVENLABS_API_KEY=
-    ```
-
-## 🚦 Health Checks
-
-### Required Services
-
-- [ ] MongoDB Connection
-- [ ] Media Storage
-- [ ] Authentication Provider
-- [ ] LiveKit Server
-
-### Optional Services
-
-- [ ] OpenAI API
-- [ ] ElevenLabs API
-- [ ] Blob Storage
-
-## 🔒 Access Control
-
-| Collection | Create | Read     | Update  | Delete  |
-| ---------- | ------ | -------- | ------- | ------- |
-| Users      | Auth   | Auth     | Auth    | Auth    |
-| Spaces     | Auth   | Auth/Pub | Auth    | Auth    |
-| Messages   | Auth   | Auth     | Creator | Creator |
-| Media      | Auth   | Public   | Creator | Creator |
-
-## 📁 Collection Dependencies
-
-```mermaid
-graph TD
-    A[Spaces] --> B[Channels]
-    A --> C[Members]
-    B --> D[Messages]
-    C --> E[Profiles]
-    A --> F[Media]
-```
-
-## 🔄 Data Flow
-
-### Space Creation
-
-1. Create Space
-2. Create Default Channels
-3. Add Creator as Admin
-4. Initialize Media Storage
-
-### Message Flow
-
-1. User Authentication
-2. Space Membership Check
-3. Channel Access Verification
-4. Message Creation/Storage
-5. Real-time Updates
-
-## ⚙️ Environment Setup
-
-```bash
-# Required
-DATABASE_URI=             # MongoDB connection string
-PAYLOAD_SECRET=          # JWT secret
-LIVEKIT_API_KEY=         # LiveKit API key
-NEXT_PUBLIC_LIVEKIT_URL= # LiveKit server URL
-
-# Optional - AI Features
-OPENAI_API_KEY=          # OpenAI API key
-ELEVENLABS_API_KEY=      # ElevenLabs API key
-
-# Optional - Storage
-BLOB_READ_WRITE_TOKEN=   # Vercel Blob storage token
-```
-
-## 🚨 Common Issues
-
-1. **MongoDB Connection**
-
-   - Check connection string
-   - Verify network access
-   - Check MongoDB version compatibility
-
-2. **Media Upload**
-
-   - Verify storage configuration
-   - Check file size limits
-   - Ensure proper permissions
-
-3. **Real-time Features**
-   - Verify LiveKit server status
-   - Check WebSocket connections
-   - Validate room tokens
-
-## 📊 Performance Considerations
-
-- MongoDB Indexes
-- Media Optimization
-- WebSocket Connections
-- API Rate Limits
-
-## 🔍 Type Safety
-
-- Strict TypeScript configuration
-- Payload-generated types
-- API route type safety
-- Component prop types
-
-## 🧪 Testing Requirements
-
-- [ ] Authentication flows
-- [ ] Space operations
-- [ ] Real-time messaging
-- [ ] Media handling
-- [ ] Access control
-- [ ] AI integrations
-
-## 📚 Documentation Standards
-
-- TypeScript interfaces
-- JSDoc comments
-- README updates
-- Changelog maintenance
-
-## 🛠️ Development Workflow
-
-1. Environment setup
-2. Type generation
-3. Development server
-4. Testing
-5. Build and deploy
-
-## 📦 Custom Blocks
-
-This project does't currently utilize any custom blocks. It is a working implementation with the goal of
-conforming to the Payload CMS v3 beta release.
-
-- **Default Payload CMS Blocks**
-- **Custom-Built Blocks**: For specific functionalities.
-- **Adapted Blocks**: From the Payload CMS public website repository.
-
----
-
-## 👥 Contributing
-
-Contributions are welcome! Whether you're interested in improving the codebase, adding new features, or fixing bugs, feel free to open issues or submit pull requests.
-
----
-
-## 🌐 Open Source Contribution
-
-This repository is public as a way to give back to the Payload CMS community. Explore, fork, or submit pull requests if you find ways to improve the project or have suggestions.
-
----
-
-## 🙏 Acknowledgements
-
-- **Payload CMS Team**: For their excellent work and open-source contributions.
-- **[Ashbuild's Payload AI Plugin](https://github.com/ashbuilds/payloadcms-ai-plugin)**: Inspiration for AI integration features.
-- **Community Contributors**: For inspiration and code snippets.
-
----
-
-## 📞 Contact
-
-For any queries or collaborations, feel free to reach out:
-
-- **Portfolio Website**: [folio.kendev.co](https://folio.kendev.co)
-- **LinkedIn**: [Ken Courtney](https://www.linkedin.com/in/kendevco/)
-- **Email**: [kenneth.courtney@gmail.com](mailto:kenneth.courtney@gmail.com)
-- **Phone**: [727-256-4413](tel:7272564413)
-
-### Additional Projects and Links
-
-- **AI Image Analyzer**: [Google Photos](https://photos.app.goo.gl/ECAVNjcXh3GRHb3S7)
-- **Groq Explorer**: [groq.kendev.co](https://groq.kendev.co)
-- **Video Journal**: [Google Photos](https://photos.app.goo.gl/Lw67CJK8msmndW5Z9)
-
-#### Apps I've Built or Host
-
-- **Uptime Kuma**: Monitoring service
-- **Big-AGI**: AI assistant
-- **Discordant Chat Application**: [Custom chat app](https://discordant.kendev.co/invite/e268ac3c-98a0-4dc4-a057-064b444a4569)
-- **Ecommerce Store**
-- **KenDev Next Commerce Admin**: [Custom-built dashboard](https://next-commerce-admin.kendev.co/)
-- **KenDev NextJS LMS**: [Learning Management System](https://lms.kendev.co)
-- **Taskify**: Task management app - [taskify.kendev.co](https://taskify.kendev.co)
-- **Trello Clone**: [taskify.kendev.co](https://taskify.kendev.co)
-- **Notion Clone**: [notes.kendev.co](https://notes.kendev.co)
+  Posts are used to generated blog posts, news articles, or any other type of content that is published over time. All posts are layout builder enabled so you can generate unique layouts for each post using layout-building blocks, see [Layout Builder](#layout-builder) for more details. Posts are also draft-enabled so you can preview them before publishing them to your website, see [Draft Preview](#draft-preview) for more details.
 
-#### Writing Examples
+- #### Pages
 
-- **Answer to Life, the Universe, and Everything**
-  - [KenDev - My Answer](https://folio.kendev.co/my-answer)
-  - [DNN Version](https://kendev.co/articles/my-answer)
-- **My Life's Journey**: [KenDev - My Life's Journey](https://kendev.co/my-lifes-journey)
-- **Autobiography Series**
-  - [Book 1](https://notes.kendev.co/preview/3j6nn4275a7926dzd07axtj69kg7q1g)
-  - [Book 2](https://notes.kendev.co/preview/3jyqmjcsyhj6khhw241yfnsb9kjjd9r)
+  All pages are layout builder enabled so you can generate unique layouts for each page using layout-building blocks, see [Layout Builder](#layout-builder) for more details. Pages are also draft-enabled so you can preview them before publishing them to your website, see [Draft Preview](#draft-preview) for more details.
 
-#### Other Projects
+- #### Media
 
-- **PayloadNuke**: Transforming PayloadCMS into a developer-first powerhouse.
-  - [Intro Video](https://youtu.be/LEsuHbKalNY)
-  - [Project Details](https://github.com/payloadnuke)
-  - **PayloadNuke Constitution Draft**: [Google Docs](https://docs.google.com/document/d/your-doc-id)
+  This is the uploads enabled collection used by pages, posts, and projects to contain media like images, videos, downloads, and other assets.
 
----
+- #### Categories
 
-## 📄 License
+  A taxonomy used to group posts together. Categories can be nested inside of one another, for example "News > Technology". See the official [Payload Nested Docs Plugin](https://payloadcms.com/docs/beta/plugins/nested-docs) for more details.
 
-This project is dual-licensed under the **MIT License** and a **Commercial License**. Please read carefully to determine which license applies to you:
+### Globals
 
-1. **MIT License** (For open-source projects, individual use, and organizations with revenue under $1 million):
+See the [Globals](https://payloadcms.com/docs/configuration/globals) docs for details on how to extend this functionality.
 
-- This license allows free use, modification, and distribution as long as the original copyright notice is included.
-- This license does not apply to companies or organizations that generate revenue above $1 million annually.
+- `Header`
 
-2. **Commercial License** (For commercial organizations or companies with revenue over $1 million):
+  The data required by the header on your front-end like nav links.
 
-- If you are using this project in a commercial context or your organization’s annual revenue exceeds $1 million, you must obtain a commercial license.
-- The commercial license includes additional rights for enterprise-level use, support, and feature requests.
-- To inquire about a commercial license, contact [kenneth.courtney@gmail.com](mailto:kenneth.courtney@gmail.com).
+- `Footer`
 
-For any questions or concerns about licensing, feel free to reach out!
+  Same as above but for the footer of your site.
 
----
+## Access control
 
-This project is continuously evolving. Check back often for updates and new features!
+Basic access control is setup to limit access to various content based based on publishing status.
 
----
+- `users`: Users can access the admin panel and create or edit content.
+- `posts`: Everyone can access published posts, but only users can create, update, or delete them.
+- `pages`: Everyone can access published pages, but only users can create, update, or delete them.
 
-# About Ken
+For more details on how to extend this functionality, see the [Payload Access Control](https://payloadcms.com/docs/beta/access-control/overview#access-control) docs.
 
-_(Private Listing)_
+## Layout Builder
 
-Hello! I'm **Kenneth Courtney**, a passionate developer and lifelong learner dedicated to pushing the boundaries of technology and personal growth.
+Create unique page layouts for any type of content using a powerful layout builder. This template comes pre-configured with the following layout building blocks:
 
-## Background
+- Hero
+- Content
+- Media
+- Call To Action
+- Archive
 
-I have a rich and varied background that includes:
+Each block is fully designed and built into the front-end website that comes with this template. See [Website](#website) for more details.
 
-- **Software Development**: Building web applications, mobile apps, and experimenting with new technologies.
-- **AI Integration**: Implementing AI solutions to enhance user experiences.
-- **Community Projects**: Engaging in projects that aim to make a positive impact.
+## Lexical editor
 
-## Personal Journey
+A deep editorial experience that allows complete freedom to focus just on writing content without breaking out of the flow with support for Payload blocks, media, links and other features provided out of the box. See [Lexical](https://payloadcms.com/docs/beta/lexical/overview) docs.
 
-My journey has been one of continuous learning and self-improvement. I've faced challenges and setbacks, but each has provided valuable lessons that have shaped who I am today.
+## Draft Preview
 
-### Notable Experiences
+All posts and pages are draft-enabled so you can preview them before publishing them to your website. To do this, these collections use [Versions](https://payloadcms.com/docs/beta/configuration/collections#versions) with `drafts` set to `true`. This means that when you create a new post, project, or page, it will be saved as a draft and will not be visible on your website until you publish it. This also means that you can preview your draft before publishing it to your website. To do this, we automatically format a custom URL which redirects to your front-end to securely fetch the draft version of your content.
 
-- **Autobiography Series**: A candid account of my life experiences, including personal reflections and growth.
-- **Reflections Journals**: Transcriptions of my time in prison, offering insights into my thoughts and transformations during that period.
-- **Community Initiatives**: Working on projects like **PayloadNuke** and **Vocamation** to contribute to the developer community and society at large.
+Since the front-end of this template is statically generated, this also means that pages, posts, and projects will need to be regenerated as changes are made to published documents. To do this, we use an `afterChange` hook to regenerate the front-end when a document has changed and its `_status` is `published`.
 
-## Interests
+For more details on how to extend this functionality, see the official [Draft Preview Example](https://github.com/payloadcms/payload/tree/beta/examples/draft-preview).
 
-- **Technology**: Always exploring new frameworks, languages, and tools.
-- **AI and Machine Learning**: Fascinated by the potential of AI to transform industries and daily life.
-- **Writing**: Expressing thoughts and ideas through articles and essays.
-- **Mentorship**: Helping others learn and grow in their own journeys.
+## Live preview
 
-## Contact Me
+In addition to draft previews you can also enable live preview to view your end resulting page as you're editing content with full support for SSR rendering. See [Live preview docs](https://payloadcms.com/docs/beta/live-preview/overview) for more details.
 
-I'm always open to connecting with new people, discussing ideas, or collaborating on projects.
+## SEO
 
-- **Email**: [kenneth.courtney@gmail.com](mailto:kenneth.courtney@gmail.com)
-- **Phone**: [727-256-4413](tel:7272564413)
-- **LinkedIn**: [Ken Courtney](https://www.linkedin.com/in/kendevco/)
-- **Portfolio**: [folio.kendev.co](https://folio.kendev.co)
+This template comes pre-configured with the official [Payload SEO Plugin](https://payloadcms.com/docs/beta/plugins/seo) for complete SEO control from the admin panel. All SEO data is fully integrated into the front-end website that comes with this template. See [Website](#website) for more details.
 
----
+## Redirects
 
-### Additional Information
+If you are migrating an existing site or moving content to a new URL, you can use the `redirects` collection to create a proper redirect from old URLs to new ones. This will ensure that proper request status codes are returned to search engines and that your users are not left with a broken link. This template comes pre-configured with the official [Payload Redirects Plugin](https://payloadcms.com/docs/beta/plugins/redirects) for complete redirect control from the admin panel. All redirects are fully integrated into the front-end website that comes with this template. See [Website](#website) for more details.
 
-- **Video Journal**: A collection of personal videos documenting various aspects of my life. [Access Here](https://photos.app.goo.gl/Lw67CJK8msmndW5Z9)
-- **Private Writings**: More in-depth and personal writings are available upon request for trusted contacts.
+## Website
 
----
+This template includes a beautifully designed, production-ready front-end built with the [Next.js App Router](https://nextjs.org), served right alongside your Payload app in a instance. This makes it so that you can deploy both your backend and website where you need it.
 
-Thank you for taking the time to learn more about me. I'm excited about the future and the possibilities it holds, and I look forward to connecting with you!
+Core features:
 
----
+- [Next.js App Router](https://nextjs.org)
+- [TypeScript](https://www.typescriptlang.org)
+- [React Hook Form](https://react-hook-form.com)
+- [Payload Admin Bar](https://github.com/payloadcms/payload-admin-bar)
+- [TailwindCSS styling](https://tailwindcss.com/)
+- [shadcn/ui components](https://ui.shadcn.com/)
+- Authentication
+- Fully featured blog
+- Publication workflow
+- User accounts
+- Dark mode
+- Pre-made layout building blocks
+- SEO
+- Redirects
+- Live preview
 
-# 🔌 Plugins Under Consideration
+### Cache
 
-## Core Plugins
+Although Next.js includes a robust set of caching strategies out of the box, Payload Cloud proxies and caches all files through Cloudflare using the [Official Cloud Plugin](https://github.com/payloadcms/plugin-cloud). This means that Next.js caching is not needed and is disabled by default. If you are hosting your app outside of Payload Cloud, you can easily reenable the Next.js caching mechanisms by removing the `no-store` directive from all fetch requests in `./src/app/_api` and then removing all instances of `export const dynamic = 'force-dynamic'` from pages files, such as `./src/app/(pages)/[slug]/page.tsx`. For more details, see the official [Next.js Caching Docs](https://nextjs.org/docs/app/building-your-application/caching).
 
-### Payload AI Plugin
+## Development
 
-- **Description**: Integrates AI capabilities into Payload CMS for enhanced content generation and management
-- **GitHub**: [ashbuilds/payload-ai](https://github.com/ashbuilds/payload-ai)
+To spin up this example locally, follow the [Quick Start](#quick-start). Then [Seed](#seed) the database with a few pages, posts, and projects.
 
-### Multi-Tenancy Solutions
+### Docker
 
-- **Payload Enchants**
-  - Enables multi-tenancy support for serving multiple tenants/sites
-  - [GitHub](https://github.com/r1tsuu/payload-enchants)
-- **Payload Tenancy**
-  - Dedicated multi-tenancy plugin for managing multiple client sites
-  - [GitHub](https://github.com/joas8211/payload-tenancy)
+Alternatively, you can use [Docker](https://www.docker.com) to spin up this template locally. To do so, follow these steps:
 
-### Analytics & Monitoring
+1. Follow [steps 1 and 2 from above](#development), the docker-compose file will automatically use the `.env` file in your project root
+1. Next run `docker-compose up`
+1. Follow [steps 4 and 5 from above](#development) to login and create your first admin user
 
-- **Dashboard Analytics Plugin**
-  - Provides in-depth analytics within Payload CMS dashboard
-  - [GitHub](https://github.com/NouanceLabs/payload-dashboard-analytics)
+That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
 
-## Authentication Options
+### Seed
 
-### Auth.js Integration
+To seed the database with a few pages, posts, and projects you can click the 'seed database' link from the admin panel.
 
-- **Description**: Integrates Auth.js with Payload CMS
-- **GitHub**: [CrawlerCode/payload-authjs](https://github.com/CrawlerCode/payload-authjs)
+The seed script will also create a demo user for demonstration purposes only:
 
-### Payload Auth Plugin
+- Demo Author
+  - Email: `demo-author@payloadcms.com`
+  - Password: `password`
 
-- **Description**: Comprehensive authentication system
-- **GitHub**: [sourabpramanik/payload-auth-plugin](https://github.com/sourabpramanik/payload-auth-plugin)
+> NOTICE: seeding the database is destructive because it drops your current database to populate a fresh one from the seed template. Only run this command if you are starting a new project or can afford to lose your current data.
 
-## Enhancement Plugins
+## Production
 
-### Comments & User Engagement
+To run Payload in production, you need to build and start the Admin panel. To do so, follow these steps:
 
-- **Payload Comments Plugin**
-  - Adds commenting functionality
-  - [GitHub](https://github.com/brachypelma/payload-plugin-comments)
+1. Invoke the `next build` script by running `pnpm build` or `npm run build` in your project root. This creates a `.next` directory with a production-ready admin bundle.
+1. Finally run `pnpm start` or `npm run start` to run Node in production and serve Payload from the `.build` directory.
+1. When you're ready to go live, see [Deployment](#deployment) for more details.
 
-### Access Control
+### Deploying to Payload Cloud
 
-- **Payload RBAC Plugin (BETA)**
-  - Role-Based Access Control management
-  - [GitHub](https://github.com/NouanceLabs/payload-simple-rbac)
+The easiest way to deploy your project is to use [Payload Cloud](https://payloadcms.com/new/import), a one-click hosting solution to deploy production-ready instances of your Payload apps directly from your GitHub repo.
 
-### Integration & Automation
+### Deploying to Vercel
 
-- **Payload Zapier Plugin**
-  - Zapier integration for automated workflows
-  - [GitHub](https://github.com/payloadcms/plugin-zapier)
+Coming soon.
 
-### Development Tools
+### Self-hosting
 
-- **Next-Payload Starter**
-  - Next.js + Payload CMS template with MUX Video
-  - [GitHub](https://github.com/jamesvclements/next-payload-starter)
+Before deploying your app, you need to:
 
-### UI/UX Enhancements
+1. Ensure your app builds and serves in production. See [Production](#production) for more details.
+2. Serve it from a
 
-- **Collections Docs Order**
-  - Drag-and-drop document reordering
-  - [GitHub](https://github.com/r1tsuu/payload-plugin-collections-docs-order)
+You can also deploy your app manually, check out the [deployment documentation](https://payloadcms.com/docs/beta/production/deployment) for full details.
 
-### Specialized Features
+## Questions
 
-- **Appointments Plugin**
-
-  - Calendly-like appointment scheduling
-  - [GitHub](https://github.com/ahmetskilinc/payload-appointments-plugin)
-
-- **Google Maps Autocomplete**
-  - Location input enhancement
-  - [GitHub](https://github.com/aritrakrbasu/payload-google-map-autocomplete-places)
-
----
-
-_Note: This README and private listing are designed to provide comprehensive information about the FolioMark5 project and myself, ensuring both collaborators and interested individuals have all the necessary details._
-
-## Development Setup
-
-### Required Steps
-
-1. Install dependencies:
+If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).

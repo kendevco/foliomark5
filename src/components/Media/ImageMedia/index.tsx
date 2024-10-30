@@ -2,7 +2,7 @@
 
 import type { StaticImageData } from 'next/image'
 
-import { cn } from '@/utilities/cn'
+import { cn } from 'src/utilities/cn'
 import NextImage from 'next/image'
 import React from 'react'
 
@@ -52,8 +52,8 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
   const sizes = sizeFromProps
     ? sizeFromProps
     : Object.entries(breakpoints)
-      .map(([, value]) => `(max-width: ${value}px) ${value}px`)
-      .join(', ')
+        .map(([, value]) => `(max-width: ${value}px) ${value}px`)
+        .join(', ')
 
   return (
     <NextImage

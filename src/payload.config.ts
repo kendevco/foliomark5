@@ -1,12 +1,11 @@
-// This is a modification of the file so I can check it back in to make a new push.
 // storage-adapter-import-placeholder
 import { mongooseAdapter } from '@payloadcms/db-mongodb' // database-adapter-import
-import { payloadCloudPlugin } from '@payloadcms/plugin-cloud'
+// import { payloadCloudPlugin } from '@payloadcms/plugin-cloud'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
-import { searchPlugin } from '@payloadcms/plugin-search'
+// import { sentry } from '@payloadcms/plugin-sentry'
 import {
   BoldFeature,
   FixedToolbarFeature,
@@ -20,29 +19,20 @@ import sharp from 'sharp' // editor-import
 import { UnderlineFeature } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
-import { slateEditor } from '@payloadcms/richtext-slate'
 import { fileURLToPath } from 'url'
+//import { payloadAiPlugin } from '@ai-stack/payloadcms'
 
 import Categories from '@/collections/Categories'
-import { Media as BaseMedia } from '@/collections/Media'
+import { Media } from '@/collections/Media'
 import { Pages } from '@/collections/Pages'
 import { Posts } from '@/collections/Posts'
 import Users from '@/collections/Users'
-import { Profiles, Spaces, Members, Channels, Messages, Conversations, DirectMessages, SpacesMedia } from '@/spaces/collections'
-
-import { Page, Post } from '@/payload-types'
-
 import { seedHandler } from '@/endpoints/seedHandler'
-import { Footer } from '@/globals/Footer/config'
-import { Header } from '@/globals/Header/config'
-import { Settings } from '@/spaces/globals/Settings/config'
+import { Footer } from '@/Footer/config'
+import { Header } from '@/Header/config'
 import { revalidateRedirects } from '@/hooks/revalidateRedirects'
-
-import { searchFields } from '@/search/fieldOverrides'
-import { beforeSyncWithSearch } from '@/search/beforeSync'
-
-// Uncomment to use the AI Stack Lexical Editor
-// import { payloadAiPlugin } from '@ai-stack/payloadcms'
+import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
+import { Page, Post } from 'src/payload-types'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -53,109 +43,17 @@ export const baseUrl =
     : process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview'
       ? `https://${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL}`
       : 'http://localhost:3000'
+const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
+  return doc?.title ? `${doc.title} | KenDev.Co` : 'KenDev.Co'
+}
 
-const plugins = [
-  redirectsPlugin({
-    collections: ['pages', 'posts'],
-    overrides: {
-      fields: ({ defaultFields }: { defaultFields: any[] }) => {
-        return defaultFields.map((field) => {
-          if ('name' in field && field.name === 'from') {
-            return {
-              ...field,
-              admin: {
-                components: {
-                  Field: () => null, // Add required component
-                },
-                description: 'You will need to rebuild the website when changing this field.',
-              },
-            }
-          }
-          return field
-        })
-      },
-      hooks: {
-        afterChange: [revalidateRedirects],
-      },
-    },
-  }),
-  nestedDocsPlugin({
-    collections: ['categories'],
-  }),
-  seoPlugin({
-    collections: ['pages', 'posts'],
-    uploadsCollection: 'media',
-    generateTitle: ({ doc }: { doc: Page | Post }) => {
-      return doc?.title ? `${doc.title} | KenDev.Co` : 'KenDev.Co'
-    },
-    generateURL: ({ doc }: { doc: Page | Post }): string => {
-      return doc?.slug
-        ? `${process.env.NEXT_PUBLIC_SERVER_URL}/${doc.slug}`
-        : process.env.NEXT_PUBLIC_SERVER_URL || '/' // Provide default value
-    },
-  }),
-  // Uncomment to use the AI Stack Lexical Editor
-  // payloadAiPlugin({
-  //   collections: {
-  //     [Posts.slug]: true,
-  //     [Pages.slug]: true,
-  //   },
-  //   debugging: false,
-  // }),
-  formBuilderPlugin({
-    fields: {
-      payment: false,
-    },
-    formOverrides: {
-      fields: ({ defaultFields }) => {
-        return defaultFields.map((field) => {
-          if ('name' in field && field.name === 'confirmationMessage') {
-            return {
-              ...field,
-              editor: lexicalEditor({
-                features: ({ rootFeatures }) => {
-                  return [
-                    ...rootFeatures,
-                    FixedToolbarFeature(),
-                    HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-                  ]
-                },
-              }),
-            }
-          }
-          return field
-        })
-      },
-    },
-  }),
-  searchPlugin({
-    collections: ['posts'],
-    beforeSync: beforeSyncWithSearch,
-    searchOverrides: {
-      fields: ({ defaultFields }) => {
-        return [...defaultFields, ...searchFields]
-      },
-    },
-  }),
-
-  //payloadCloudPlugin(), // storage-adapter-placeholder
-]
-
-// Only add Vercel Blob storage if token exists
-if (process.env.BLOB_READ_WRITE_TOKEN) {
-  plugins.push(
-    vercelBlobStorage({
-      collections: {
-        [SpacesMedia.slug]: true,
-        [BaseMedia.slug]: true,
-      },
-      token: process.env.BLOB_READ_WRITE_TOKEN,
-    }),
-  )
+const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
+  return doc?.slug
+    ? `${process.env.NEXT_PUBLIC_SERVER_URL!}/${doc.slug}`
+    : process.env.NEXT_PUBLIC_SERVER_URL!
 }
 
 export default buildConfig({
-  secret: process.env.PAYLOAD_SECRET || 'YOUR-SECRET-KEY', // Required
   admin: {
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
@@ -224,34 +122,14 @@ export default buildConfig({
       ]
     },
   }),
-  collections: [
-    Categories,
-    Pages,
-    Posts,
-    BaseMedia,
-    SpacesMedia,
-    Users,
-    Profiles,
-    Spaces,
-    Members,
-    Channels,
-    Messages,
-    Conversations,
-    DirectMessages,
-  ],
-  globals: [Header, Footer, Settings],
-  plugins,
-  typescript: {
-    outputFile: path.resolve(dirname, 'payload-types.ts'),
-  },
-  graphQL: {
-    schemaOutputFile: path.resolve(dirname, 'generated-schema.graphql'),
-  },
+  // database-adapter-config-start
   db: mongooseAdapter({
     url: process.env.DATABASE_URI!,
   }),
-  cors: [baseUrl].filter(Boolean),
-  csrf: [baseUrl].filter(Boolean),
+  // database-adapter-config-end
+  collections: [Pages, Posts, Media, Categories, Users],
+  cors: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(Boolean),
+  csrf: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(Boolean),
   endpoints: [
     // The seed endpoint is used to populate the database with some example data
     // You should delete this endpoint before deploying your site to production
@@ -261,4 +139,86 @@ export default buildConfig({
       path: '/seed',
     },
   ],
+  globals: [Header, Footer],
+  plugins: [
+    // sentry({
+    //   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+    // }),
+    redirectsPlugin({
+      collections: ['pages', 'posts'],
+      overrides: {
+        // @ts-expect-error
+        fields: ({ defaultFields }) => {
+          return defaultFields.map((field) => {
+            if ('name' in field && field.name === 'from') {
+              return {
+                ...field,
+                admin: {
+                  description: 'You will need to rebuild the website when changing this field.',
+                },
+              }
+            }
+            return field
+          })
+        },
+        hooks: {
+          afterChange: [revalidateRedirects],
+        },
+      },
+    }),
+    nestedDocsPlugin({
+      collections: ['categories'],
+    }),
+    seoPlugin({
+      generateTitle,
+      generateURL,
+    }),
+    formBuilderPlugin({
+      fields: {
+        payment: false,
+      },
+      formOverrides: {
+        fields: ({ defaultFields }) => {
+          return defaultFields.map((field) => {
+            if ('name' in field && field.name === 'confirmationMessage') {
+              return {
+                ...field,
+                editor: lexicalEditor({
+                  features: ({ rootFeatures }) => {
+                    return [
+                      ...rootFeatures,
+                      FixedToolbarFeature(),
+                      HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+                    ]
+                  },
+                }),
+              }
+            }
+            return field
+          })
+        },
+      },
+    }),
+    //payloadCloudPlugin(), // storage-adapter-placeholder
+    vercelBlobStorage({
+      collections: {
+        [Media.slug]: true,
+      },
+      token: process.env.BLOB_READ_WRITE_TOKEN!,
+    }),
+
+    // Uncomment to use the AI Stack Lexical Editor
+    //   payloadAiPlugin({
+    //   collections: {
+    //   [Posts.slug]: true,
+    //   [Pages.slug]: true,
+    //   },
+    //   debugging: true,
+    // }),
+  ],
+  secret: process.env.PAYLOAD_SECRET!,
+  sharp,
+  typescript: {
+    outputFile: path.resolve(dirname, 'payload-types.ts'),
+  },
 })

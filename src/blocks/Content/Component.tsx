@@ -1,44 +1,48 @@
+import { cn } from 'src/utilities/cn'
 import React from 'react'
-import type { Page } from '@/payload-types'
-import { CMSLink } from '@/components/Link'
 import RichText from '@/components/RichText'
+
+import type { Page } from '@/payload-types'
+
+import { CMSLink } from '../../components/Link'
 
 type Props = Extract<Page['layout'][0], { blockType: 'content' }>
 
-type ContentLinkType = {
-  type?: 'reference' | 'custom' | undefined
-  newTab?: boolean | undefined
-  reference?: { relationTo: 'pages'; value: string | Page } | undefined
-  url?: string | undefined
-  label?: string
-  appearance?: 'default' | 'outline' | 'secondary' | undefined
-}
+export const ContentBlock: React.FC<
+  {
+    id?: string
+  } & Props
+> = (props) => {
+  const { columns } = props
 
-export const ContentBlock: React.FC<Props> = ({ columns }) => {
+  const colsSpanClasses = {
+    full: '12',
+    half: '6',
+    oneThird: '4',
+    twoThirds: '8',
+  }
+
   return (
-    <div className="container">
-      <div className="grid grid-cols-1 gap-x-8 gap-y-8 md:grid-cols-2">
-        {columns?.map((col, index) => {
-          const { enableLink, link, richText } = col
+    <div className="container my-16">
+      <div className="grid grid-cols-4 lg:grid-cols-12 gap-y-8 gap-x-16">
+        {columns &&
+          columns.length > 0 &&
+          columns.map((col, index) => {
+            const { enableLink, link, richText, size } = col
 
-          // Transform and sanitize the link data
-          const transformedLink = link
-            ? {
-                ...link,
-                url: link.url || '',
-                type: link.type || 'custom',
-                newTab: link.newTab || false,
-                appearance: link.appearance || 'default',
-              }
-            : undefined
+            return (
+              <div
+                className={cn(`col-span-4 lg:col-span-${colsSpanClasses[size!]}`, {
+                  'md:col-span-2': size !== 'full',
+                })}
+                key={index}
+              >
+                {richText && <RichText content={richText} enableGutter={false} />}
 
-          return (
-            <div key={index}>
-              {richText && <RichText content={richText} enableGutter={false} />}
-              {enableLink && transformedLink && <CMSLink {...transformedLink} />}
-            </div>
-          )
-        })}
+                {enableLink && <CMSLink {...link} />}
+              </div>
+            )
+          })}
       </div>
     </div>
   )

@@ -1,7 +1,0 @@
-Application Structure Summary:
-
-src:
-  Total files: 108
-  Included files: 108
-  Excluded files: 0
-

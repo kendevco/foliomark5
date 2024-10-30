@@ -20,10 +20,6 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
-
-// Uncomment to use the AI Stack Lexical Editor 
-//import { PayloadAiPluginLexicalEditorFeature } from '@ai-stack/payloadcms'
-
 export const Pages: CollectionConfig = {
   slug: 'pages',
   access: {
@@ -37,21 +33,13 @@ export const Pages: CollectionConfig = {
     livePreview: {
       url: ({ data }) => {
         const path = generatePreviewPath({
-          slug: typeof data?.slug === 'string' ? data.slug : '',
-          collection: 'pages',
+          path: `/${typeof data?.slug === 'string' ? data.slug : ''}`,
         })
-
         return `${process.env.NEXT_PUBLIC_SERVER_URL}${path}`
       },
     },
-    preview: (data) => {
-      const path = generatePreviewPath({
-        slug: typeof data?.slug === 'string' ? data.slug : '',
-        collection: 'pages',
-      })
-
-      return `${process.env.NEXT_PUBLIC_SERVER_URL}${path}`
-    },
+    preview: (doc) =>
+      generatePreviewPath({ path: `/${typeof doc?.slug === 'string' ? doc.slug : ''}` }),
     useAsTitle: 'title',
   },
   fields: [

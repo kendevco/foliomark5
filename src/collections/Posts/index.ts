@@ -28,7 +28,7 @@ import {
 import { slugField } from '@/fields/slug'
 
 // Uncomment to use the AI Stack Lexical Editor
-// import { PayloadAiPluginLexicalEditorFeature } from '@ai-stack/payloadcms'
+//import { PayloadAiPluginLexicalEditorFeature } from '@ai-stack/payloadcms'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
@@ -43,21 +43,13 @@ export const Posts: CollectionConfig = {
     livePreview: {
       url: ({ data }) => {
         const path = generatePreviewPath({
-          slug: typeof data?.slug === 'string' ? data.slug : '',
-          collection: 'posts',
+          path: `/posts/${typeof data?.slug === 'string' ? data.slug : ''}`,
         })
-
         return `${process.env.NEXT_PUBLIC_SERVER_URL}${path}`
       },
     },
-    preview: (data) => {
-      const path = generatePreviewPath({
-        slug: typeof data?.slug === 'string' ? data.slug : '',
-        collection: 'posts',
-      })
-
-      return `${process.env.NEXT_PUBLIC_SERVER_URL}${path}`
-    },
+    preview: (doc) =>
+      generatePreviewPath({ path: `/posts/${typeof doc?.slug === 'string' ? doc.slug : ''}` }),
     useAsTitle: 'title',
   },
   fields: [
@@ -83,7 +75,7 @@ export const Posts: CollectionConfig = {
                     FixedToolbarFeature(),
                     InlineToolbarFeature(),
                     HorizontalRuleFeature(),
-                    // PayloadAiPluginLexicalEditorFeature(),
+                    //PayloadAiPluginLexicalEditorFeature(),
                   ]
                 },
               }),
